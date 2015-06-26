@@ -251,8 +251,8 @@ public interface ContributorLocalService extends BaseLocalService,
     * @author Mihai Sava
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getContributors(java.lang.String projectId,
-        java.lang.String privateTocken) throws java.io.IOException;
+    public java.util.Map<java.lang.String, java.lang.String> getContributors()
+        throws java.io.IOException;
 
     /**
     * parse contributors to java objects and save the parsed objects into database
@@ -262,7 +262,8 @@ public interface ContributorLocalService extends BaseLocalService,
     * @throws JSONException, SystemException
     * @author Mihai Sava
     */
-    public void ParseContributorsFromJson(java.lang.String jsonContributors)
+    public void ParseContributorsFromJson(
+        java.util.Map<java.lang.String, java.lang.String> jsonContributorsResponsesWithProjectName)
         throws com.liferay.portal.kernel.exception.SystemException,
             org.primefaces.json.JSONException;
 
@@ -283,4 +284,12 @@ public interface ContributorLocalService extends BaseLocalService,
     */
     public void deleleAllContributors()
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProjectId(java.lang.String projectName,
+        java.lang.String privateTocken)
+        throws org.primefaces.json.JSONException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.Properties loadConfigFile();
 }

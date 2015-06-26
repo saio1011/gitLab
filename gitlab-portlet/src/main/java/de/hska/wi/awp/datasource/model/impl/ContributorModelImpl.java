@@ -54,9 +54,10 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
             { "email", Types.VARCHAR },
             { "commits", Types.INTEGER },
             { "locAdditions", Types.INTEGER },
-            { "locDeletions", Types.INTEGER }
+            { "locDeletions", Types.INTEGER },
+            { "projectName", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table gitlab_Contributor (contributorId LONG not null primary key,name VARCHAR(75) null,email VARCHAR(75) null,commits INTEGER,locAdditions INTEGER,locDeletions INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table gitlab_Contributor (contributorId LONG not null primary key,name VARCHAR(75) null,email VARCHAR(75) null,commits INTEGER,locAdditions INTEGER,locDeletions INTEGER,projectName VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table gitlab_Contributor";
     public static final String ORDER_BY_JPQL = " ORDER BY contributor.contributorId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY gitlab_Contributor.contributorId ASC";
@@ -87,6 +88,7 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
     private int _commits;
     private int _locAdditions;
     private int _locDeletions;
+    private String _projectName;
     private long _columnBitmask;
     private Contributor _escapedModel;
 
@@ -112,6 +114,7 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
         model.setCommits(soapModel.getCommits());
         model.setLocAdditions(soapModel.getLocAdditions());
         model.setLocDeletions(soapModel.getLocDeletions());
+        model.setProjectName(soapModel.getProjectName());
 
         return model;
     }
@@ -176,6 +179,7 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
         attributes.put("commits", getCommits());
         attributes.put("locAdditions", getLocAdditions());
         attributes.put("locDeletions", getLocDeletions());
+        attributes.put("projectName", getProjectName());
 
         return attributes;
     }
@@ -216,6 +220,12 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
 
         if (locDeletions != null) {
             setLocDeletions(locDeletions);
+        }
+
+        String projectName = (String) attributes.get("projectName");
+
+        if (projectName != null) {
+            setProjectName(projectName);
         }
     }
 
@@ -303,6 +313,21 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
         _locDeletions = locDeletions;
     }
 
+    @JSON
+    @Override
+    public String getProjectName() {
+        if (_projectName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _projectName;
+        }
+    }
+
+    @Override
+    public void setProjectName(String projectName) {
+        _projectName = projectName;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -340,6 +365,7 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
         contributorImpl.setCommits(getCommits());
         contributorImpl.setLocAdditions(getLocAdditions());
         contributorImpl.setLocDeletions(getLocDeletions());
+        contributorImpl.setProjectName(getProjectName());
 
         contributorImpl.resetOriginalValues();
 
@@ -422,12 +448,20 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
 
         contributorCacheModel.locDeletions = getLocDeletions();
 
+        contributorCacheModel.projectName = getProjectName();
+
+        String projectName = contributorCacheModel.projectName;
+
+        if ((projectName != null) && (projectName.length() == 0)) {
+            contributorCacheModel.projectName = null;
+        }
+
         return contributorCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{contributorId=");
         sb.append(getContributorId());
@@ -441,6 +475,8 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
         sb.append(getLocAdditions());
         sb.append(", locDeletions=");
         sb.append(getLocDeletions());
+        sb.append(", projectName=");
+        sb.append(getProjectName());
         sb.append("}");
 
         return sb.toString();
@@ -448,7 +484,7 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("de.hska.wi.awp.datasource.model.Contributor");
@@ -477,6 +513,10 @@ public class ContributorModelImpl extends BaseModelImpl<Contributor>
         sb.append(
             "<column><column-name>locDeletions</column-name><column-value><![CDATA[");
         sb.append(getLocDeletions());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>projectName</column-name><column-value><![CDATA[");
+        sb.append(getProjectName());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

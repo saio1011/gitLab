@@ -52,6 +52,10 @@ public class ContributorLocalServiceClp implements ContributorLocalService {
     private String[] _methodParameterTypes21;
     private String _methodName22;
     private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
 
     public ContributorLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -149,13 +153,11 @@ public class ContributorLocalServiceClp implements ContributorLocalService {
 
         _methodName19 = "getContributors";
 
-        _methodParameterTypes19 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
+        _methodParameterTypes19 = new String[] {  };
 
         _methodName20 = "ParseContributorsFromJson";
 
-        _methodParameterTypes20 = new String[] { "java.lang.String" };
+        _methodParameterTypes20 = new String[] { "java.util.Map" };
 
         _methodName21 = "getCurrentUser";
 
@@ -164,6 +166,16 @@ public class ContributorLocalServiceClp implements ContributorLocalService {
         _methodName22 = "deleleAllContributors";
 
         _methodParameterTypes22 = new String[] {  };
+
+        _methodName23 = "getProjectId";
+
+        _methodParameterTypes23 = new String[] {
+                "java.lang.String", "java.lang.String"
+            };
+
+        _methodName24 = "loadConfigFile";
+
+        _methodParameterTypes24 = new String[] {  };
     }
 
     @Override
@@ -681,18 +693,13 @@ public class ContributorLocalServiceClp implements ContributorLocalService {
     }
 
     @Override
-    public java.lang.String getContributors(java.lang.String projectId,
-        java.lang.String privateTocken) throws java.io.IOException {
+    public java.util.Map<java.lang.String, java.lang.String> getContributors()
+        throws java.io.IOException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(projectId),
-                        
-                    ClpSerializer.translateInput(privateTocken)
-                    });
+                    _methodParameterTypes19, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -708,17 +715,21 @@ public class ContributorLocalServiceClp implements ContributorLocalService {
             }
         }
 
-        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+        return (java.util.Map<java.lang.String, java.lang.String>) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
-    public void ParseContributorsFromJson(java.lang.String jsonContributors)
+    public void ParseContributorsFromJson(
+        java.util.Map<java.lang.String, java.lang.String> jsonContributorsResponsesWithProjectName)
         throws com.liferay.portal.kernel.exception.SystemException,
             org.primefaces.json.JSONException {
         try {
             _invokableLocalService.invokeMethod(_methodName20,
                 _methodParameterTypes20,
-                new Object[] { ClpSerializer.translateInput(jsonContributors) });
+                new Object[] {
+                    ClpSerializer.translateInput(
+                        jsonContributorsResponsesWithProjectName)
+                });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -792,5 +803,58 @@ public class ContributorLocalServiceClp implements ContributorLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    @Override
+    public java.lang.String getProjectId(java.lang.String projectName,
+        java.lang.String privateTocken)
+        throws org.primefaces.json.JSONException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] {
+                        ClpSerializer.translateInput(projectName),
+                        
+                    ClpSerializer.translateInput(privateTocken)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof org.primefaces.json.JSONException) {
+                throw (org.primefaces.json.JSONException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.Properties loadConfigFile() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.Properties) ClpSerializer.translateOutput(returnObj);
     }
 }

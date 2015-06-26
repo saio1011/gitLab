@@ -19,6 +19,7 @@ public class ContributorSoap implements Serializable {
     private int _commits;
     private int _locAdditions;
     private int _locDeletions;
+    private String _projectName;
 
     public ContributorSoap() {
     }
@@ -32,6 +33,7 @@ public class ContributorSoap implements Serializable {
         soapModel.setCommits(model.getCommits());
         soapModel.setLocAdditions(model.getLocAdditions());
         soapModel.setLocDeletions(model.getLocDeletions());
+        soapModel.setProjectName(model.getProjectName());
 
         return soapModel;
     }
@@ -126,5 +128,13 @@ public class ContributorSoap implements Serializable {
 
     public void setLocDeletions(int locDeletions) {
         _locDeletions = locDeletions;
+    }
+
+    public String getProjectName() {
+        return _projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        _projectName = projectName;
     }
 }

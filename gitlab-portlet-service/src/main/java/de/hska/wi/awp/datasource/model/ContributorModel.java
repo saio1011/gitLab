@@ -129,6 +129,21 @@ public interface ContributorModel extends BaseModel<Contributor> {
      */
     public void setLocDeletions(int locDeletions);
 
+    /**
+     * Returns the project name of this contributor.
+     *
+     * @return the project name of this contributor
+     */
+    @AutoEscape
+    public String getProjectName();
+
+    /**
+     * Sets the project name of this contributor.
+     *
+     * @param projectName the project name of this contributor
+     */
+    public void setProjectName(String projectName);
+
     @Override
     public boolean isNew();
 

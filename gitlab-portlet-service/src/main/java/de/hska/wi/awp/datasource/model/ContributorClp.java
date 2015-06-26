@@ -26,6 +26,7 @@ public class ContributorClp extends BaseModelImpl<Contributor>
     private int _commits;
     private int _locAdditions;
     private int _locDeletions;
+    private String _projectName;
     private BaseModel<?> _contributorRemoteModel;
     private Class<?> _clpSerializerClass = de.hska.wi.awp.datasource.service.ClpSerializer.class;
 
@@ -72,6 +73,7 @@ public class ContributorClp extends BaseModelImpl<Contributor>
         attributes.put("commits", getCommits());
         attributes.put("locAdditions", getLocAdditions());
         attributes.put("locDeletions", getLocDeletions());
+        attributes.put("projectName", getProjectName());
 
         return attributes;
     }
@@ -112,6 +114,12 @@ public class ContributorClp extends BaseModelImpl<Contributor>
 
         if (locDeletions != null) {
             setLocDeletions(locDeletions);
+        }
+
+        String projectName = (String) attributes.get("projectName");
+
+        if (projectName != null) {
+            setProjectName(projectName);
         }
     }
 
@@ -247,6 +255,28 @@ public class ContributorClp extends BaseModelImpl<Contributor>
         }
     }
 
+    @Override
+    public String getProjectName() {
+        return _projectName;
+    }
+
+    @Override
+    public void setProjectName(String projectName) {
+        _projectName = projectName;
+
+        if (_contributorRemoteModel != null) {
+            try {
+                Class<?> clazz = _contributorRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setProjectName", String.class);
+
+                method.invoke(_contributorRemoteModel, projectName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContributorRemoteModel() {
         return _contributorRemoteModel;
     }
@@ -320,6 +350,7 @@ public class ContributorClp extends BaseModelImpl<Contributor>
         clone.setCommits(getCommits());
         clone.setLocAdditions(getLocAdditions());
         clone.setLocDeletions(getLocDeletions());
+        clone.setProjectName(getProjectName());
 
         return clone;
     }
@@ -369,7 +400,7 @@ public class ContributorClp extends BaseModelImpl<Contributor>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{contributorId=");
         sb.append(getContributorId());
@@ -383,6 +414,8 @@ public class ContributorClp extends BaseModelImpl<Contributor>
         sb.append(getLocAdditions());
         sb.append(", locDeletions=");
         sb.append(getLocDeletions());
+        sb.append(", projectName=");
+        sb.append(getProjectName());
         sb.append("}");
 
         return sb.toString();
@@ -390,7 +423,7 @@ public class ContributorClp extends BaseModelImpl<Contributor>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("de.hska.wi.awp.datasource.model.Contributor");
@@ -419,6 +452,10 @@ public class ContributorClp extends BaseModelImpl<Contributor>
         sb.append(
             "<column><column-name>locDeletions</column-name><column-value><![CDATA[");
         sb.append(getLocDeletions());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>projectName</column-name><column-value><![CDATA[");
+        sb.append(getProjectName());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

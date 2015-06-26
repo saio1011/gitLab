@@ -24,5 +24,6 @@
 		<property name="commits" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="locAdditions" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="locDeletions" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="projectName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 </hibernate-mapping>

@@ -272,9 +272,9 @@ public class ContributorLocalServiceUtil {
     * @throws IOException
     * @author Mihai Sava
     */
-    public static java.lang.String getContributors(java.lang.String projectId,
-        java.lang.String privateTocken) throws java.io.IOException {
-        return getService().getContributors(projectId, privateTocken);
+    public static java.util.Map<java.lang.String, java.lang.String> getContributors()
+        throws java.io.IOException {
+        return getService().getContributors();
     }
 
     /**
@@ -286,10 +286,11 @@ public class ContributorLocalServiceUtil {
     * @author Mihai Sava
     */
     public static void ParseContributorsFromJson(
-        java.lang.String jsonContributors)
+        java.util.Map<java.lang.String, java.lang.String> jsonContributorsResponsesWithProjectName)
         throws com.liferay.portal.kernel.exception.SystemException,
             org.primefaces.json.JSONException {
-        getService().ParseContributorsFromJson(jsonContributors);
+        getService()
+            .ParseContributorsFromJson(jsonContributorsResponsesWithProjectName);
     }
 
     public static de.hska.wi.awp.datasource.model.Contributor getCurrentUser(
@@ -311,6 +312,16 @@ public class ContributorLocalServiceUtil {
     public static void deleleAllContributors()
         throws com.liferay.portal.kernel.exception.SystemException {
         getService().deleleAllContributors();
+    }
+
+    public static java.lang.String getProjectId(java.lang.String projectName,
+        java.lang.String privateTocken)
+        throws org.primefaces.json.JSONException {
+        return getService().getProjectId(projectName, privateTocken);
+    }
+
+    public static java.util.Properties loadConfigFile() {
+        return getService().loadConfigFile();
     }
 
     public static void clearService() {

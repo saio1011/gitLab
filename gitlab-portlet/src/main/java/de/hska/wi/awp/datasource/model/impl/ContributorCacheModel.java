@@ -26,10 +26,11 @@ public class ContributorCacheModel implements CacheModel<Contributor>,
     public int commits;
     public int locAdditions;
     public int locDeletions;
+    public String projectName;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{contributorId=");
         sb.append(contributorId);
@@ -43,6 +44,8 @@ public class ContributorCacheModel implements CacheModel<Contributor>,
         sb.append(locAdditions);
         sb.append(", locDeletions=");
         sb.append(locDeletions);
+        sb.append(", projectName=");
+        sb.append(projectName);
         sb.append("}");
 
         return sb.toString();
@@ -70,6 +73,12 @@ public class ContributorCacheModel implements CacheModel<Contributor>,
         contributorImpl.setLocAdditions(locAdditions);
         contributorImpl.setLocDeletions(locDeletions);
 
+        if (projectName == null) {
+            contributorImpl.setProjectName(StringPool.BLANK);
+        } else {
+            contributorImpl.setProjectName(projectName);
+        }
+
         contributorImpl.resetOriginalValues();
 
         return contributorImpl;
@@ -83,6 +92,7 @@ public class ContributorCacheModel implements CacheModel<Contributor>,
         commits = objectInput.readInt();
         locAdditions = objectInput.readInt();
         locDeletions = objectInput.readInt();
+        projectName = objectInput.readUTF();
     }
 
     @Override
@@ -105,5 +115,11 @@ public class ContributorCacheModel implements CacheModel<Contributor>,
         objectOutput.writeInt(commits);
         objectOutput.writeInt(locAdditions);
         objectOutput.writeInt(locDeletions);
+
+        if (projectName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(projectName);
+        }
     }
 }

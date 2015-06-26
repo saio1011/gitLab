@@ -27,6 +27,7 @@
 			<basic name="commits" />
 			<basic name="locAdditions" />
 			<basic name="locDeletions" />
+			<basic name="projectName" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

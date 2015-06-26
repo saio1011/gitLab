@@ -621,6 +621,7 @@ public class ContributorPersistenceImpl extends BasePersistenceImpl<Contributor>
         contributorImpl.setCommits(contributor.getCommits());
         contributorImpl.setLocAdditions(contributor.getLocAdditions());
         contributorImpl.setLocDeletions(contributor.getLocDeletions());
+        contributorImpl.setProjectName(contributor.getProjectName());
 
         return contributorImpl;
     }

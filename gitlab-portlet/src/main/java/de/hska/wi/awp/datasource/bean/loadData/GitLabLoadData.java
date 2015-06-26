@@ -35,34 +35,34 @@ public class GitLabLoadData{
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-	public void fillDatabase(){
-        addMessage("Datenbank GitLab wird neu geladen");
-		
-		//
-		 String projectName = "arcsolution";
-		 String privateTocken="private_token=3iwVxh3v71GzUCDz_Azm";
-		 String projectId = "";
-		try {
-			projectId = CommitLocalServiceUtil.getProjectId(projectName, privateTocken);
-			List<String> commitsAsJsonStrings = CommitLocalServiceUtil.getAllCommitsAsJsonString(projectId, privateTocken);
-			CommitLocalServiceUtil.ParseCommitsFromJson(commitsAsJsonStrings);
-			
-		   	String contributorsAsJsonString = ContributorLocalServiceUtil.getContributors(projectId, privateTocken);
-			ContributorLocalServiceUtil.ParseContributorsFromJson(contributorsAsJsonString);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
+//	public void fillDatabase(){
+//        addMessage("Datenbank GitLab wird neu geladen");
+//		
+//		//
+//		 String projectName = "arcsolution";
+//		 String privateTocken="private_token=3iwVxh3v71GzUCDz_Azm";
+//		 String projectId = "";
+//		try {
+//			projectId = CommitLocalServiceUtil.getProjectId(projectName, privateTocken);
+//			List<String> commitsAsJsonStrings = CommitLocalServiceUtil.getAllCommitsAsJsonString(projectId, privateTocken);
+//			CommitLocalServiceUtil.ParseCommitsFromJson(commitsAsJsonStrings);
+//			
+//		   	String contributorsAsJsonString = ContributorLocalServiceUtil.getContributors(projectId, privateTocken);
+//			ContributorLocalServiceUtil.ParseContributorsFromJson(contributorsAsJsonString);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}  
 		
  	
-		System.out.println("Database GitLab is now up to date");
-        addMessage("Datenbank GitLab erfolgreich geladen");
-	}
+//		System.out.println("Database GitLab is now up to date");
+//        addMessage("Datenbank GitLab erfolgreich geladen");
+//	}
 
 }

@@ -285,9 +285,9 @@ public class ContributorLocalServiceWrapper implements ContributorLocalService,
     * @author Mihai Sava
     */
     @Override
-    public java.lang.String getContributors(java.lang.String projectId,
-        java.lang.String privateTocken) throws java.io.IOException {
-        return _contributorLocalService.getContributors(projectId, privateTocken);
+    public java.util.Map<java.lang.String, java.lang.String> getContributors()
+        throws java.io.IOException {
+        return _contributorLocalService.getContributors();
     }
 
     /**
@@ -299,10 +299,11 @@ public class ContributorLocalServiceWrapper implements ContributorLocalService,
     * @author Mihai Sava
     */
     @Override
-    public void ParseContributorsFromJson(java.lang.String jsonContributors)
+    public void ParseContributorsFromJson(
+        java.util.Map<java.lang.String, java.lang.String> jsonContributorsResponsesWithProjectName)
         throws com.liferay.portal.kernel.exception.SystemException,
             org.primefaces.json.JSONException {
-        _contributorLocalService.ParseContributorsFromJson(jsonContributors);
+        _contributorLocalService.ParseContributorsFromJson(jsonContributorsResponsesWithProjectName);
     }
 
     @Override
@@ -326,6 +327,18 @@ public class ContributorLocalServiceWrapper implements ContributorLocalService,
     public void deleleAllContributors()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contributorLocalService.deleleAllContributors();
+    }
+
+    @Override
+    public java.lang.String getProjectId(java.lang.String projectName,
+        java.lang.String privateTocken)
+        throws org.primefaces.json.JSONException {
+        return _contributorLocalService.getProjectId(projectName, privateTocken);
+    }
+
+    @Override
+    public java.util.Properties loadConfigFile() {
+        return _contributorLocalService.loadConfigFile();
     }
 
     /**

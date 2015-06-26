@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -54,7 +55,7 @@ public class StudentHistoryViewModelBean implements Serializable{
 //	 }
 	 
 	public int getNumberOfContributors() throws Exception {
-		this.createHeaderModel(this.getStudenthskaId(), "291216", "private_token=3iwVxh3v71GzUCDz_Azm");
+		this.createHeaderModel(this.getStudenthskaId(), this.getProjecthskaId());
 		System.out.println("Student id:"+this.getStudenthskaId());
 		System.out.println("Project id:"+this.getProjecthskaId());
 		return numberOfContributors;
@@ -144,40 +145,57 @@ public class StudentHistoryViewModelBean implements Serializable{
 	 * @author Mihai Sava
 	 * @throws Exception 
      */
-    private void createHeaderModel(String studentName, String projectId, String privateTocken) throws Exception{
-//    	String contributorsAsJsonString = ContributorLocalServiceUtil.getContributors(projectId, privateTocken);
-//		ContributorLocalServiceUtil.ParseContributorsFromJson(contributorsAsJsonString);
-		
-		numberOfContributors = ContributorLocalServiceUtil.getContributorsCount();
+    private void createHeaderModel(String studentName, String projectId) throws Exception{
+//    	Map<String,String> contributorsAsJsonStringsWithProjectName = ContributorLocalServiceUtil.getContributors();
+//		ContributorLocalServiceUtil.ParseContributorsFromJson(contributorsAsJsonStringsWithProjectName);
 		
 		List<Contributor> allContributors = ContributorLocalServiceUtil.getContributors(0, ContributorLocalServiceUtil.getContributorsCount());
+		
+		List<Contributor> allContributorsForActualProject = new ArrayList<Contributor>();
+		for(Contributor contributor : allContributors){
+			if(contributor.getProjectName().equals(projectId)){
+				allContributorsForActualProject.add(contributor);
+			}
+		}
+		
+		numberOfContributors = allContributorsForActualProject.size();
 		
     	int totalLocAdditions = 0;
     	int tatalLocDeletions = 0;;
     	int totalCommits = 0;
     	boolean isCurrentUser = false;
-    	for (Contributor contributor : allContributors){
+    	List<Contributor> currentUser = new ArrayList<Contributor>();
+    	for (Contributor contributor : allContributorsForActualProject){
     		totalLocAdditions += contributor.getLocAdditions();
     		tatalLocDeletions += contributor.getLocDeletions();
     		totalCommits += contributor.getCommits();
     		
-    		if(contributor.getName().equals(studentName)){
+    		if(contributor.getName().equals(studentName)){ 
+    			currentUser.add(contributor);
     			isCurrentUser = true;
     		}
     	}
     	
     	if(isCurrentUser){
-    		Contributor currentStudent = ContributorLocalServiceUtil.getCurrentUser(studentName);
+//    		Contributor currentStudent = ContributorLocalServiceUtil.getCurrentUser(studentName);
     		
-    		if(currentStudent == null){
-    			numberOfCommits = 00; 
-    			locAdditions = 00;
-    			locDeletions = 00;
+//    		if(currentStudent == null){
+//    			numberOfCommits = 00; 
+//    			locAdditions = 00;
+//    			locDeletions = 00;
+//    		}
+    		int nrOfCommits = 0;
+    		int nrlocAdditions = 0;
+    		int nrlocDeletions = 0;
+    		for(Contributor currentUsr : currentUser){
+    			nrOfCommits += currentUsr.getCommits();
+    			nrlocDeletions += currentUsr.getLocDeletions();
+    			nrlocAdditions += currentUsr.getLocAdditions();
     		}
 
-    		numberOfCommits = currentStudent.getCommits();
-    		locAdditions = currentStudent.getLocAdditions();
-    		locDeletions = currentStudent.getLocDeletions();
+    		numberOfCommits = nrOfCommits;
+    		locAdditions = nrlocAdditions;
+    		locDeletions = nrlocDeletions;
     		
     		noContributor = "";
     	}else{

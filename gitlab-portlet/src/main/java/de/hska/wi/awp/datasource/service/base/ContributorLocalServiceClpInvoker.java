@@ -53,6 +53,10 @@ public class ContributorLocalServiceClpInvoker {
     private String[] _methodParameterTypes48;
     private String _methodName49;
     private String[] _methodParameterTypes49;
+    private String _methodName50;
+    private String[] _methodParameterTypes50;
+    private String _methodName51;
+    private String[] _methodParameterTypes51;
 
     public ContributorLocalServiceClpInvoker() {
         _methodName0 = "addContributor";
@@ -147,13 +151,11 @@ public class ContributorLocalServiceClpInvoker {
 
         _methodName46 = "getContributors";
 
-        _methodParameterTypes46 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
+        _methodParameterTypes46 = new String[] {  };
 
         _methodName47 = "ParseContributorsFromJson";
 
-        _methodParameterTypes47 = new String[] { "java.lang.String" };
+        _methodParameterTypes47 = new String[] { "java.util.Map" };
 
         _methodName48 = "getCurrentUser";
 
@@ -162,6 +164,16 @@ public class ContributorLocalServiceClpInvoker {
         _methodName49 = "deleleAllContributors";
 
         _methodParameterTypes49 = new String[] {  };
+
+        _methodName50 = "getProjectId";
+
+        _methodParameterTypes50 = new String[] {
+                "java.lang.String", "java.lang.String"
+            };
+
+        _methodName51 = "loadConfigFile";
+
+        _methodParameterTypes51 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -267,13 +279,12 @@ public class ContributorLocalServiceClpInvoker {
 
         if (_methodName46.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes46, parameterTypes)) {
-            return ContributorLocalServiceUtil.getContributors((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1]);
+            return ContributorLocalServiceUtil.getContributors();
         }
 
         if (_methodName47.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes47, parameterTypes)) {
-            ContributorLocalServiceUtil.ParseContributorsFromJson((java.lang.String) arguments[0]);
+            ContributorLocalServiceUtil.ParseContributorsFromJson((java.util.Map<java.lang.String, java.lang.String>) arguments[0]);
 
             return null;
         }
@@ -288,6 +299,17 @@ public class ContributorLocalServiceClpInvoker {
             ContributorLocalServiceUtil.deleleAllContributors();
 
             return null;
+        }
+
+        if (_methodName50.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
+            return ContributorLocalServiceUtil.getProjectId((java.lang.String) arguments[0],
+                (java.lang.String) arguments[1]);
+        }
+
+        if (_methodName51.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
+            return ContributorLocalServiceUtil.loadConfigFile();
         }
 
         throw new UnsupportedOperationException();

@@ -15,5 +15,6 @@
 		<field name="commits" type="int" />
 		<field name="locAdditions" type="int" />
 		<field name="locDeletions" type="int" />
+		<field name="projectName" type="String" />
 	</model>
 </model-hints>

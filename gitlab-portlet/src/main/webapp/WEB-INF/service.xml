@@ -9,6 +9,7 @@
         <column name="commits" type="int"></column>
         <column name="locAdditions" type="int"></column>
         <column name="locDeletions" type="int"></column>
+        <column name="projectName" type="String"></column>
         <finder name="Name" return-type="Contributor">
         	<finder-column name="name"/>
         </finder>

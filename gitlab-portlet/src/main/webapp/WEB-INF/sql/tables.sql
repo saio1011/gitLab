@@ -12,5 +12,6 @@ create table gitlab_Contributor (
 	email VARCHAR(75) null,
 	commits INTEGER,
 	locAdditions INTEGER,
-	locDeletions INTEGER
+	locDeletions INTEGER,
+	projectName VARCHAR(75) null
 );

@@ -43,6 +43,7 @@ public class ContributorWrapper implements Contributor,
         attributes.put("commits", getCommits());
         attributes.put("locAdditions", getLocAdditions());
         attributes.put("locDeletions", getLocDeletions());
+        attributes.put("projectName", getProjectName());
 
         return attributes;
     }
@@ -83,6 +84,12 @@ public class ContributorWrapper implements Contributor,
 
         if (locDeletions != null) {
             setLocDeletions(locDeletions);
+        }
+
+        String projectName = (String) attributes.get("projectName");
+
+        if (projectName != null) {
+            setProjectName(projectName);
         }
     }
 
@@ -224,6 +231,26 @@ public class ContributorWrapper implements Contributor,
     @Override
     public void setLocDeletions(int locDeletions) {
         _contributor.setLocDeletions(locDeletions);
+    }
+
+    /**
+    * Returns the project name of this contributor.
+    *
+    * @return the project name of this contributor
+    */
+    @Override
+    public java.lang.String getProjectName() {
+        return _contributor.getProjectName();
+    }
+
+    /**
+    * Sets the project name of this contributor.
+    *
+    * @param projectName the project name of this contributor
+    */
+    @Override
+    public void setProjectName(java.lang.String projectName) {
+        _contributor.setProjectName(projectName);
     }
 
     @Override
