@@ -2,7 +2,11 @@
     <wb-module deploy-name="gitlab-portlet">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/" source-path="/"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="gitlab-portlet-service-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/gitlab-portlet-service/gitlab-portlet-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="gitlab-portlet"/>
         <property name="java-output-path" value="/gitlab-portlet/target/classes"/>
     </wb-module>
