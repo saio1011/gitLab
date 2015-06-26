@@ -56,6 +56,7 @@ public class StudentHistoryViewModelBean implements Serializable{
 	public int getNumberOfContributors() throws Exception {
 		this.createHeaderModel(this.getStudenthskaId(), "291216", "private_token=3iwVxh3v71GzUCDz_Azm");
 		System.out.println("Student id:"+this.getStudenthskaId());
+		System.out.println("Project id:"+this.getProjecthskaId());
 		return numberOfContributors;
 	}
 

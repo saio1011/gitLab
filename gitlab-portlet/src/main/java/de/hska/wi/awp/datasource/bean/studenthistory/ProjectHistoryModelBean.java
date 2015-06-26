@@ -32,6 +32,7 @@ import de.hska.wi.awp.datasource.service.persistence.ContributorUtil;
 @ManagedBean
 @SessionScoped
 public class ProjectHistoryModelBean implements Serializable{
+	private String projectId;
 	private Integer totalContributors;
 
 	public Integer getTotalContributors() {
@@ -40,5 +41,13 @@ public class ProjectHistoryModelBean implements Serializable{
 
 	public void setTotalContributors(Integer totalContributors) {
 		this.totalContributors = totalContributors;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 }

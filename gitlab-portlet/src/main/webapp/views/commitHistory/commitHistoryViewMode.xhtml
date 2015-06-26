@@ -14,7 +14,7 @@
     		<h:panelGroup id="student" rendered="#{not empty studentHistoryViewModelBean.studenthskaId}">
        			<ui:include src="commitHistoryStudent.xhtml" />
    			</h:panelGroup>
-   			<h:panelGroup id="project" rendered="#{not empty projectHistoryModelBean.totalContributors}">
+   			<h:panelGroup id="project" rendered="#{not empty projectHistoryModelBean.projectId}">
        			<ui:include src="commitHistoryProject.xhtml" />
    			</h:panelGroup>
 		</h:panelGroup>
