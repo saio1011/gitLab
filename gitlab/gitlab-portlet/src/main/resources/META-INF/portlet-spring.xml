@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="de.hska.wi.awp.datasource.service.CommitLocalService" class="de.hska.wi.awp.datasource.service.impl.CommitLocalServiceImpl" />
+	<bean id="de.hska.wi.awp.datasource.service.CommitService" class="de.hska.wi.awp.datasource.service.impl.CommitServiceImpl" />
+	<bean id="de.hska.wi.awp.datasource.service.persistence.CommitPersistence" class="de.hska.wi.awp.datasource.service.persistence.CommitPersistenceImpl" parent="basePersistence" />
+	<bean id="de.hska.wi.awp.datasource.service.ContributorLocalService" class="de.hska.wi.awp.datasource.service.impl.ContributorLocalServiceImpl" />
+	<bean id="de.hska.wi.awp.datasource.service.ContributorService" class="de.hska.wi.awp.datasource.service.impl.ContributorServiceImpl" />
+	<bean id="de.hska.wi.awp.datasource.service.persistence.ContributorPersistence" class="de.hska.wi.awp.datasource.service.persistence.ContributorPersistenceImpl" parent="basePersistence" />
+</beans>

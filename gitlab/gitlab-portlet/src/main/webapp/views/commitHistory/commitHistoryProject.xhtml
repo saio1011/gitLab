@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<f:view
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+>
+	<h:head />
+	<h:body>
+	<p:panel header="General Data">
+		<h:panelGrid id="gridProject" columns="4" cellpadding="5" >
+			<h:outputText value="Anzahl Contributors:" />
+			<h:outputText value="#{projectHistoryModelBean.totalContributors}"/>
+			<h:outputText value="" />
+			<h:outputText value="" />
+		</h:panelGrid>
+	</p:panel>
+		
+	</h:body>
+</f:view>
