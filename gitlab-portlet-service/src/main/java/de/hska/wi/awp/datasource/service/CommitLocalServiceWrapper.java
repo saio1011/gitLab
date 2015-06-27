@@ -305,7 +305,8 @@ public class CommitLocalServiceWrapper implements CommitLocalService,
     /**
     * init LineChartModel model for Commit History
     *
-    * @param String studentName - this is the student hs name
+    * @param String studentName - this is the student hska name
+    * @param String projectName - this is the hska project id (for example "AWP")
     * @return LineChartModel model - sorted by date
     * @throws SystemException
     * @author Mihai Sava
@@ -316,6 +317,25 @@ public class CommitLocalServiceWrapper implements CommitLocalService,
         throws com.liferay.portal.kernel.exception.SystemException {
         return _commitLocalService.initCommitHistoryModel(studentName,
             projectName);
+    }
+
+    /**
+    * init Model for commitHistory - Project site
+    *
+    * @param String - project name (for example "AWP")
+    * @return DonutChartModel - model
+    * @author Mihai Sava
+    */
+    @Override
+    public org.primefaces.model.chart.DonutChartModel initCommitDistributionModel(
+        java.lang.String projectName) {
+        return _commitLocalService.initCommitDistributionModel(projectName);
+    }
+
+    @Override
+    public java.lang.Integer getAllCommitsForProjectId(
+        java.lang.String projectName) {
+        return _commitLocalService.getAllCommitsForProjectId(projectName);
     }
 
     /**

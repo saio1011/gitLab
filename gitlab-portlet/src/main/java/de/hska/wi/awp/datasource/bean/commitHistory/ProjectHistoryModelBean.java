@@ -18,36 +18,77 @@ import org.primefaces.json.JSONException;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CategoryAxis;
+import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.LineChartModel;
 
 import com.liferay.portal.kernel.exception.SystemException;
 
 import de.hska.wi.awp.datasource.NoSuchContributorException;
+import de.hska.wi.awp.datasource.model.Commit;
 import de.hska.wi.awp.datasource.model.Contributor;
 import de.hska.wi.awp.datasource.service.CommitLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.ContributorLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.ContributorServiceUtil;
+import de.hska.wi.awp.datasource.service.persistence.CommitUtil;
 import de.hska.wi.awp.datasource.service.persistence.ContributorUtil;
 
-@ManagedBean
+@ManagedBean(name = "projectHistoryModelBean")
 @SessionScoped
 public class ProjectHistoryModelBean implements Serializable{
+	
+	/**
+	 * Serializable
+	 */
+	private static final long serialVersionUID = 3308514386036298980L;
+	
 	private String projectId;
-	private Integer totalContributors;
+	private Integer totalCommits;
+	private DonutChartModel commitDistributionModel;
 
-	public Integer getTotalContributors() {
-		return totalContributors = 45;
+
+	public Integer getTotalCommits() {
+		this.getNumberOfCommitsForThisProject(this.projectId);
+		return totalCommits;
 	}
-
-	public void setTotalContributors(Integer totalContributors) {
-		this.totalContributors = totalContributors;
-	}
-
 	public String getProjectId() {
 		return projectId;
 	}
 
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
+	}
+	
+	public DonutChartModel getCommitDistributionModel() { 
+		this.createCommitHistoryDistributionModel(this.projectId);
+		return commitDistributionModel;
+	}
+
+	/**
+	 * create Model for commit distribution 
+	 * @param projectName
+	 * 
+	 * @author Mihai Sava
+	 */
+	private void createCommitHistoryDistributionModel(String projectName){
+		
+		commitDistributionModel = CommitLocalServiceUtil.initCommitDistributionModel(projectName);
+		commitDistributionModel.setTitle("Verteilung der Commits pro Student");
+		commitDistributionModel.setLegendPosition("e");
+		commitDistributionModel.setSliceMargin(5);
+		commitDistributionModel.setShowDataLabels(true);
+		commitDistributionModel.setDataFormat("value");
+		commitDistributionModel.setShadow(false);
+	}
+	
+	/**
+	 * get number of commits for this project
+	 * @param project id as string (example "AWP")
+	 * @return number of commits as int
+	 * 
+	 * @author Mihai Sava
+	 */
+	public void getNumberOfCommitsForThisProject(String projectName){
+		Integer nrOfCommits = CommitLocalServiceUtil.getAllCommitsForProjectId(projectName);
+		totalCommits = nrOfCommits;
 	}
 }

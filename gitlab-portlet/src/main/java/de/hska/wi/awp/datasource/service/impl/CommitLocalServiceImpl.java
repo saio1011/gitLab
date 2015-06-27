@@ -11,14 +11,18 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.util.Constants;
 
@@ -29,7 +33,9 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import de.hska.wi.awp.datasource.model.Commit;
+import de.hska.wi.awp.datasource.model.Contributor;
 import de.hska.wi.awp.datasource.service.CommitLocalServiceUtil;
+import de.hska.wi.awp.datasource.service.ContributorLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.base.CommitLocalServiceBaseImpl;
 import de.hska.wi.awp.datasource.service.persistence.CommitUtil;
 import de.hska.wi.awp.datasource.utils.Helper;
@@ -217,7 +223,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
     public LineChartModel initCommitHistoryModel(String studentName, String projectName) throws SystemException{
     	LineChartModel model = new LineChartModel();
     	
-    	List<Commit> allCommitsFromThisStudent = CommitUtil.findByAuthorName(studentName, projectName);
+    	List<Commit> allCommitsFromThisStudent = CommitUtil.findByAuthorNameAndProjectName(studentName, projectName);
     	
     	// get dates from commits 
     		//we take the first 8 characters from the date field as string
@@ -277,6 +283,78 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
         model.addSeries(student);
     	
     	return model;
+    }
+    
+    /**
+     * init Model for commitHistory - Project site
+     * @param String - project name (for example "AWP")
+     * @return DonutChartModel - model
+     * @author Mihai Sava
+     */
+    public DonutChartModel initCommitDistributionModel(String projectName){
+    	DonutChartModel commitDistributionModel = new DonutChartModel();
+    	Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
+    	
+    	//get all Commits from this project
+    	List<Commit> allCommitsForThisProject = null;
+    	try {
+    		allCommitsForThisProject = CommitUtil.findByProjectName(projectName);
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	//get all Contributors for all projects
+    	List<Contributor> allContributors = null;
+    	try {
+			allContributors = ContributorLocalServiceUtil.getContributors(0, ContributorLocalServiceUtil.getContributorsCount());
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	//get only the contributors for this project
+    	List<Contributor> allContributorsForActualProject = new ArrayList<Contributor>();
+    	for(Contributor contributor : allContributors){
+			if(contributor.getProjectName().equals(projectName)){
+				allContributorsForActualProject.add(contributor);
+			}
+		}
+    	
+    	//set values in the model
+    	for (Contributor contributor : allContributorsForActualProject){
+    		int numberOfCommits = 0;
+    		for (Commit commit : allCommitsForThisProject){
+    			if(commit.getAuthorName().equals(contributor.getName())){
+    				numberOfCommits += 1;
+    			}
+    		}
+    		circle1.put(contributor.getName(), numberOfCommits);
+    	}
+    	
+    	commitDistributionModel.addCircle(circle1);
+    	return commitDistributionModel;
+    }
+    
+	/**
+	 * get number of commits for this project
+	 * @param project id as string (example "AWP")
+	 * @return number of commits as int
+	 * 
+	 * @author Mihai Sava
+	 */
+    public Integer getAllCommitsForProjectId(String projectName){
+    	//get all Commits from this project
+    	List<Commit> allCommitsForThisProject = null;
+    	try {
+    		allCommitsForThisProject = CommitUtil.findByProjectName(projectName);
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	Integer anzahlCommits = allCommitsForThisProject.size();
+    	return anzahlCommits;
     }
     
 	/**

@@ -269,7 +269,8 @@ public interface CommitLocalService extends BaseLocalService,
     /**
     * init LineChartModel model for Commit History
     *
-    * @param String studentName - this is the student hs name
+    * @param String studentName - this is the student hska name
+    * @param String projectName - this is the hska project id (for example "AWP")
     * @return LineChartModel model - sorted by date
     * @throws SystemException
     * @author Mihai Sava
@@ -277,6 +278,20 @@ public interface CommitLocalService extends BaseLocalService,
     public org.primefaces.model.chart.LineChartModel initCommitHistoryModel(
         java.lang.String studentName, java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * init Model for commitHistory - Project site
+    *
+    * @param String - project name (for example "AWP")
+    * @return DonutChartModel - model
+    * @author Mihai Sava
+    */
+    public org.primefaces.model.chart.DonutChartModel initCommitDistributionModel(
+        java.lang.String projectName);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Integer getAllCommitsForProjectId(
+        java.lang.String projectName);
 
     /**
     * delete all commits from the database

@@ -104,10 +104,11 @@ public class CommitUtil {
     * @return the matching commits
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByAuthorName(
+    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByAuthorNameAndProjectName(
         java.lang.String authorName, java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAuthorName(authorName, projectName);
+        return getPersistence()
+                   .findByAuthorNameAndProjectName(authorName, projectName);
     }
 
     /**
@@ -124,11 +125,12 @@ public class CommitUtil {
     * @return the range of matching commits
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByAuthorName(
+    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByAuthorNameAndProjectName(
         java.lang.String authorName, java.lang.String projectName, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByAuthorName(authorName, projectName, start, end);
+                   .findByAuthorNameAndProjectName(authorName, projectName,
+            start, end);
     }
 
     /**
@@ -146,14 +148,14 @@ public class CommitUtil {
     * @return the ordered range of matching commits
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByAuthorName(
+    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByAuthorNameAndProjectName(
         java.lang.String authorName, java.lang.String projectName, int start,
         int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByAuthorName(authorName, projectName, start, end,
-            orderByComparator);
+                   .findByAuthorNameAndProjectName(authorName, projectName,
+            start, end, orderByComparator);
     }
 
     /**
@@ -166,14 +168,14 @@ public class CommitUtil {
     * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static de.hska.wi.awp.datasource.model.Commit findByAuthorName_First(
+    public static de.hska.wi.awp.datasource.model.Commit findByAuthorNameAndProjectName_First(
         java.lang.String authorName, java.lang.String projectName,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException,
             de.hska.wi.awp.datasource.NoSuchCommitException {
         return getPersistence()
-                   .findByAuthorName_First(authorName, projectName,
-            orderByComparator);
+                   .findByAuthorNameAndProjectName_First(authorName,
+            projectName, orderByComparator);
     }
 
     /**
@@ -185,13 +187,13 @@ public class CommitUtil {
     * @return the first matching commit, or <code>null</code> if a matching commit could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static de.hska.wi.awp.datasource.model.Commit fetchByAuthorName_First(
+    public static de.hska.wi.awp.datasource.model.Commit fetchByAuthorNameAndProjectName_First(
         java.lang.String authorName, java.lang.String projectName,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByAuthorName_First(authorName, projectName,
-            orderByComparator);
+                   .fetchByAuthorNameAndProjectName_First(authorName,
+            projectName, orderByComparator);
     }
 
     /**
@@ -204,14 +206,14 @@ public class CommitUtil {
     * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static de.hska.wi.awp.datasource.model.Commit findByAuthorName_Last(
+    public static de.hska.wi.awp.datasource.model.Commit findByAuthorNameAndProjectName_Last(
         java.lang.String authorName, java.lang.String projectName,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException,
             de.hska.wi.awp.datasource.NoSuchCommitException {
         return getPersistence()
-                   .findByAuthorName_Last(authorName, projectName,
-            orderByComparator);
+                   .findByAuthorNameAndProjectName_Last(authorName,
+            projectName, orderByComparator);
     }
 
     /**
@@ -223,13 +225,13 @@ public class CommitUtil {
     * @return the last matching commit, or <code>null</code> if a matching commit could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static de.hska.wi.awp.datasource.model.Commit fetchByAuthorName_Last(
+    public static de.hska.wi.awp.datasource.model.Commit fetchByAuthorNameAndProjectName_Last(
         java.lang.String authorName, java.lang.String projectName,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByAuthorName_Last(authorName, projectName,
-            orderByComparator);
+                   .fetchByAuthorNameAndProjectName_Last(authorName,
+            projectName, orderByComparator);
     }
 
     /**
@@ -243,15 +245,15 @@ public class CommitUtil {
     * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a commit with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static de.hska.wi.awp.datasource.model.Commit[] findByAuthorName_PrevAndNext(
+    public static de.hska.wi.awp.datasource.model.Commit[] findByAuthorNameAndProjectName_PrevAndNext(
         java.lang.String commitId, java.lang.String authorName,
         java.lang.String projectName,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException,
             de.hska.wi.awp.datasource.NoSuchCommitException {
         return getPersistence()
-                   .findByAuthorName_PrevAndNext(commitId, authorName,
-            projectName, orderByComparator);
+                   .findByAuthorNameAndProjectName_PrevAndNext(commitId,
+            authorName, projectName, orderByComparator);
     }
 
     /**
@@ -261,10 +263,11 @@ public class CommitUtil {
     * @param projectName the project name
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByAuthorName(java.lang.String authorName,
-        java.lang.String projectName)
+    public static void removeByAuthorNameAndProjectName(
+        java.lang.String authorName, java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByAuthorName(authorName, projectName);
+        getPersistence()
+            .removeByAuthorNameAndProjectName(authorName, projectName);
     }
 
     /**
@@ -275,10 +278,176 @@ public class CommitUtil {
     * @return the number of matching commits
     * @throws SystemException if a system exception occurred
     */
-    public static int countByAuthorName(java.lang.String authorName,
+    public static int countByAuthorNameAndProjectName(
+        java.lang.String authorName, java.lang.String projectName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByAuthorNameAndProjectName(authorName, projectName);
+    }
+
+    /**
+    * Returns all the commits where projectName = &#63;.
+    *
+    * @param projectName the project name
+    * @return the matching commits
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByProjectName(
         java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByAuthorName(authorName, projectName);
+        return getPersistence().findByProjectName(projectName);
+    }
+
+    /**
+    * Returns a range of all the commits where projectName = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link de.hska.wi.awp.datasource.model.impl.CommitModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param projectName the project name
+    * @param start the lower bound of the range of commits
+    * @param end the upper bound of the range of commits (not inclusive)
+    * @return the range of matching commits
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByProjectName(
+        java.lang.String projectName, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByProjectName(projectName, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the commits where projectName = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link de.hska.wi.awp.datasource.model.impl.CommitModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param projectName the project name
+    * @param start the lower bound of the range of commits
+    * @param end the upper bound of the range of commits (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching commits
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<de.hska.wi.awp.datasource.model.Commit> findByProjectName(
+        java.lang.String projectName, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProjectName(projectName, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first commit in the ordered set where projectName = &#63;.
+    *
+    * @param projectName the project name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching commit
+    * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static de.hska.wi.awp.datasource.model.Commit findByProjectName_First(
+        java.lang.String projectName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            de.hska.wi.awp.datasource.NoSuchCommitException {
+        return getPersistence()
+                   .findByProjectName_First(projectName, orderByComparator);
+    }
+
+    /**
+    * Returns the first commit in the ordered set where projectName = &#63;.
+    *
+    * @param projectName the project name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching commit, or <code>null</code> if a matching commit could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static de.hska.wi.awp.datasource.model.Commit fetchByProjectName_First(
+        java.lang.String projectName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProjectName_First(projectName, orderByComparator);
+    }
+
+    /**
+    * Returns the last commit in the ordered set where projectName = &#63;.
+    *
+    * @param projectName the project name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching commit
+    * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static de.hska.wi.awp.datasource.model.Commit findByProjectName_Last(
+        java.lang.String projectName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            de.hska.wi.awp.datasource.NoSuchCommitException {
+        return getPersistence()
+                   .findByProjectName_Last(projectName, orderByComparator);
+    }
+
+    /**
+    * Returns the last commit in the ordered set where projectName = &#63;.
+    *
+    * @param projectName the project name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching commit, or <code>null</code> if a matching commit could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static de.hska.wi.awp.datasource.model.Commit fetchByProjectName_Last(
+        java.lang.String projectName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProjectName_Last(projectName, orderByComparator);
+    }
+
+    /**
+    * Returns the commits before and after the current commit in the ordered set where projectName = &#63;.
+    *
+    * @param commitId the primary key of the current commit
+    * @param projectName the project name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next commit
+    * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a commit with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static de.hska.wi.awp.datasource.model.Commit[] findByProjectName_PrevAndNext(
+        java.lang.String commitId, java.lang.String projectName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            de.hska.wi.awp.datasource.NoSuchCommitException {
+        return getPersistence()
+                   .findByProjectName_PrevAndNext(commitId, projectName,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the commits where projectName = &#63; from the database.
+    *
+    * @param projectName the project name
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProjectName(java.lang.String projectName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByProjectName(projectName);
+    }
+
+    /**
+    * Returns the number of commits where projectName = &#63;.
+    *
+    * @param projectName the project name
+    * @return the number of matching commits
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProjectName(java.lang.String projectName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByProjectName(projectName);
     }
 
     /**

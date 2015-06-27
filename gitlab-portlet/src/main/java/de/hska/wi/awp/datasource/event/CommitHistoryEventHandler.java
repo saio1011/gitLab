@@ -66,7 +66,7 @@ public class CommitHistoryEventHandler implements BridgeEventHandler{
 				e.printStackTrace();
 			}
 			studentHistoryModelBean.setProjecthskaId(project.getProjecthskaId());
- 			ProjectHistoryModelBean projectHistoryModelBean = getProjecttHistoryModelBean(facesContext);
+ 			ProjectHistoryModelBean projectHistoryModelBean = getProjectHistoryModelBean(facesContext);
  			projectHistoryModelBean.setProjectId(null);
 
  			String fromAction = null;
@@ -88,8 +88,8 @@ public class CommitHistoryEventHandler implements BridgeEventHandler{
              //Sets the Student null in the StudentHistoryViewModelBean
              //This way we can choose between the views in one portlet
   			String hskaId = (String) value;
-  			StudentHistoryModelBean studentHistoryViewModelBean = getStudentHistoryModelBean(facesContext);
-  			studentHistoryViewModelBean.setProjecthskaId(hskaId);
+  			ProjectHistoryModelBean projectHistoryModelBean = getProjectHistoryModelBean(facesContext);
+  			projectHistoryModelBean.setProjectId(hskaId);
   			StudentHistoryModelBean studentHistoryBean = getStudentHistoryModelBean(facesContext);
   			studentHistoryBean.setStudenthskaId(null);
 
@@ -116,7 +116,7 @@ public class CommitHistoryEventHandler implements BridgeEventHandler{
 	/**
 	 * get ProjectHistoryModelBean
 	 */
-	protected ProjectHistoryModelBean getProjecttHistoryModelBean(FacesContext facesContext) {
+	protected ProjectHistoryModelBean getProjectHistoryModelBean(FacesContext facesContext) {
 		String elExpression = "#{projectHistoryModelBean}";
 		ELContext elContext = facesContext.getELContext();
 		ValueExpression valueExpression = facesContext.getApplication().getExpressionFactory().createValueExpression(

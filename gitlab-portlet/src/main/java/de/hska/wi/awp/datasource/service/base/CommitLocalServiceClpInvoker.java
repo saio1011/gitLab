@@ -55,6 +55,10 @@ public class CommitLocalServiceClpInvoker {
     private String[] _methodParameterTypes49;
     private String _methodName50;
     private String[] _methodParameterTypes50;
+    private String _methodName51;
+    private String[] _methodParameterTypes51;
+    private String _methodName52;
+    private String[] _methodParameterTypes52;
 
     public CommitLocalServiceClpInvoker() {
         _methodName0 = "addCommit";
@@ -161,13 +165,21 @@ public class CommitLocalServiceClpInvoker {
                 "java.lang.String", "java.lang.String"
             };
 
-        _methodName49 = "deleteAllCommits";
+        _methodName49 = "initCommitDistributionModel";
 
-        _methodParameterTypes49 = new String[] {  };
+        _methodParameterTypes49 = new String[] { "java.lang.String" };
 
-        _methodName50 = "loadConfigFile";
+        _methodName50 = "getAllCommitsForProjectId";
 
-        _methodParameterTypes50 = new String[] {  };
+        _methodParameterTypes50 = new String[] { "java.lang.String" };
+
+        _methodName51 = "deleteAllCommits";
+
+        _methodParameterTypes51 = new String[] {  };
+
+        _methodName52 = "loadConfigFile";
+
+        _methodParameterTypes52 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -291,13 +303,23 @@ public class CommitLocalServiceClpInvoker {
 
         if (_methodName49.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes49, parameterTypes)) {
+            return CommitLocalServiceUtil.initCommitDistributionModel((java.lang.String) arguments[0]);
+        }
+
+        if (_methodName50.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
+            return CommitLocalServiceUtil.getAllCommitsForProjectId((java.lang.String) arguments[0]);
+        }
+
+        if (_methodName51.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
             CommitLocalServiceUtil.deleteAllCommits();
 
             return null;
         }
 
-        if (_methodName50.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
+        if (_methodName52.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
             return CommitLocalServiceUtil.loadConfigFile();
         }
 

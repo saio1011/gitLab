@@ -21,8 +21,11 @@
         <column name="titleCommit" type="String"></column>
         <column name="createdAt" type="String"></column>
         <column name="projectName" type="String"></column>
-        <finder name="AuthorName" return-type="Collection">
+        <finder name="AuthorNameAndProjectName" return-type="Collection">
         	<finder-column name="authorName" />
+        	<finder-column name="projectName" />
+        </finder>
+        <finder name="ProjectName" return-type="Collection">
         	<finder-column name="projectName" />
         </finder>
     </entity>

@@ -54,6 +54,10 @@ public class CommitLocalServiceClp implements CommitLocalService {
     private String[] _methodParameterTypes22;
     private String _methodName23;
     private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
 
     public CommitLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -162,13 +166,21 @@ public class CommitLocalServiceClp implements CommitLocalService {
                 "java.lang.String", "java.lang.String"
             };
 
-        _methodName22 = "deleteAllCommits";
+        _methodName22 = "initCommitDistributionModel";
 
-        _methodParameterTypes22 = new String[] {  };
+        _methodParameterTypes22 = new String[] { "java.lang.String" };
 
-        _methodName23 = "loadConfigFile";
+        _methodName23 = "getAllCommitsForProjectId";
 
-        _methodParameterTypes23 = new String[] {  };
+        _methodParameterTypes23 = new String[] { "java.lang.String" };
+
+        _methodName24 = "deleteAllCommits";
+
+        _methodParameterTypes24 = new String[] {  };
+
+        _methodName25 = "loadConfigFile";
+
+        _methodParameterTypes25 = new String[] {  };
     }
 
     @Override
@@ -770,11 +782,57 @@ public class CommitLocalServiceClp implements CommitLocalService {
     }
 
     @Override
+    public org.primefaces.model.chart.DonutChartModel initCommitDistributionModel(
+        java.lang.String projectName) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
+                    new Object[] { ClpSerializer.translateInput(projectName) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (org.primefaces.model.chart.DonutChartModel) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.Integer getAllCommitsForProjectId(
+        java.lang.String projectName) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] { ClpSerializer.translateInput(projectName) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.Integer) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public void deleteAllCommits()
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22, new Object[] {  });
+            _invokableLocalService.invokeMethod(_methodName24,
+                _methodParameterTypes24, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -796,8 +854,8 @@ public class CommitLocalServiceClp implements CommitLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName23,
-                    _methodParameterTypes23, new Object[] {  });
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
