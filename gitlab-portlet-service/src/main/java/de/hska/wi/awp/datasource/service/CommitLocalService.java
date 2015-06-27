@@ -254,8 +254,7 @@ public interface CommitLocalService extends BaseLocalService,
     * @author Mihai Sava
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.String> getAllCommitsAsJsonString(
-        java.lang.String projectId, java.lang.String privateTocken)
+    public java.util.List<java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException;
 
     /**

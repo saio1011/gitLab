@@ -152,9 +152,7 @@ public class CommitLocalServiceClp implements CommitLocalService {
 
         _methodName19 = "getAllCommitsAsJsonString";
 
-        _methodParameterTypes19 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
+        _methodParameterTypes19 = new String[] {  };
 
         _methodName20 = "ParseCommitsFromJson";
 
@@ -698,19 +696,13 @@ public class CommitLocalServiceClp implements CommitLocalService {
     }
 
     @Override
-    public java.util.List<java.lang.String> getAllCommitsAsJsonString(
-        java.lang.String projectId, java.lang.String privateTocken)
+    public java.util.List<java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(projectId),
-                        
-                    ClpSerializer.translateInput(privateTocken)
-                    });
+                    _methodParameterTypes19, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

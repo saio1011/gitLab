@@ -3,19 +3,14 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>gitlab</portlet-name>
-		<icon>/icon.png</icon>
+		<portlet-name>CommitHistory</portlet-name>
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-css>/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<portlet>
-		<portlet-name>StudentHistory</portlet-name>
-		<icon>/icon.png</icon>
+		<portlet-name>GitLabLoadData</portlet-name>
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-css>/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>
-			/js/main.js
-		</footer-portlet-javascript>
-		<css-class-wrapper>studenthistory-portlet</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

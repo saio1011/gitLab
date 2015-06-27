@@ -4,6 +4,6 @@
 <display>
 	<category name="AWP Bewertung GitLab">
 		<portlet id="CommitHistory"></portlet>
-		<portlet id="GitLab Load Data"></portlet>
+		<portlet id="GitLabLoadData"></portlet>
 	</category>
 </display>

@@ -1,18 +1,13 @@
-package de.hska.wi.awp.datasource.bean.studenthistory;
+package de.hska.wi.awp.datasource.bean.commitHistory;
 
-import java.io.FileInputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.SessionScoped;
 
 import org.primefaces.json.JSONException;
 import org.primefaces.model.chart.Axis;
@@ -22,37 +17,37 @@ import org.primefaces.model.chart.LineChartModel;
 
 import com.liferay.portal.kernel.exception.SystemException;
 
-import de.hska.wi.awp.datasource.NoSuchContributorException;
 import de.hska.wi.awp.datasource.model.Contributor;
 import de.hska.wi.awp.datasource.service.CommitLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.ContributorLocalServiceUtil;
-import de.hska.wi.awp.datasource.service.ContributorServiceUtil;
-import de.hska.wi.awp.datasource.service.persistence.ContributorUtil;
 
-@ManagedBean
-public class StudentHistoryViewModelBean implements Serializable{
+/**
+ * 
+ * @author Mihai Sava
+ */
+
+@ManagedBean(name = "studentHistoryModelBean")
+@SessionScoped
+public class StudentHistoryModelBean implements Serializable{
 	
-	 private LineChartModel lineCommitsHistory;
-	 private String nameStudent;
-	 private int numberOfCommits;
-	 private int locAdditions;
-	 private int locDeletions;
-	 private int numberOfContributors;
-	 private int numberOfTotalCommits;
-	 private int numberOfTotalAdditions;
-	 private int numberOfTotalDeletions;
-	 private String studenthskaId;
-	 private String projecthskaId;
-	 private String noContributor;
-	 
-//	 @PostConstruct
-//	 public void init(){
-//		 String projectName = "arcsolution";
-//		 String privateTocken="private_token=3iwVxh3v71GzUCDz_Azm";
-//		 String studentName = "saio1011";
-//		 String projectId = "blabla";
-////			 String projectId = CommitLocalServiceUtil.getProjectId(projectName, privateTocken);
-//	 }
+	 /**
+	 * Serializable
+	 */
+	private static final long serialVersionUID = -1342820644463262367L;
+	
+	private LineChartModel lineCommitsHistory;
+	private String nameStudent;
+	private int numberOfCommits;
+	private int locAdditions;
+	private int locDeletions;
+	private int numberOfContributors;
+	private int numberOfTotalCommits;
+	private int numberOfTotalAdditions;
+	private int numberOfTotalDeletions;
+	private String studenthskaId;
+	private String projecthskaId;
+	private String noContributor;
+
 	 
 	public int getNumberOfContributors() throws Exception {
 		this.createHeaderModel(this.getStudenthskaId(), this.getProjecthskaId());
@@ -109,7 +104,7 @@ public class StudentHistoryViewModelBean implements Serializable{
 	}
 
 	public LineChartModel getLineCommitsHistory() throws SystemException, IOException, JSONException {
-		this.createLineCommitsHistoryModel(this.getStudenthskaId(), "291216", "private_token=3iwVxh3v71GzUCDz_Azm");
+		this.createLineCommitsHistoryModel(this.getStudenthskaId());
 		return lineCommitsHistory;
 	}
 
@@ -123,10 +118,8 @@ public class StudentHistoryViewModelBean implements Serializable{
 	 * @throws SystemException, IOException, JSONException
 	 * @author Mihai Sava
 	 */
-	private void createLineCommitsHistoryModel(String studentName, String projectId, String privateTocken) throws SystemException, IOException, JSONException{
-//		List<String> commitsAsJsonStrings = CommitLocalServiceUtil.getAllCommitsAsJsonString(projectId, privateTocken);
-//		CommitLocalServiceUtil.ParseCommitsFromJson(commitsAsJsonStrings);
-		
+	private void createLineCommitsHistoryModel(String studentName) throws SystemException, IOException, JSONException{
+
 		lineCommitsHistory = CommitLocalServiceUtil.initCommitHistoryModel(studentName);
 		lineCommitsHistory.setTitle("Commit History");
 		lineCommitsHistory.setLegendPosition("e");
@@ -141,16 +134,17 @@ public class StudentHistoryViewModelBean implements Serializable{
      * create model for header values
      * 
      * @param String studentName - this is the hs name
+     * @param String projectId - this is the project id (for example "AWP")
      * @return void
 	 * @author Mihai Sava
 	 * @throws Exception 
      */
     private void createHeaderModel(String studentName, String projectId) throws Exception{
-//    	Map<String,String> contributorsAsJsonStringsWithProjectName = ContributorLocalServiceUtil.getContributors();
-//		ContributorLocalServiceUtil.ParseContributorsFromJson(contributorsAsJsonStringsWithProjectName);
-		
+  	
+    	//get all Contributors for all projects
 		List<Contributor> allContributors = ContributorLocalServiceUtil.getContributors(0, ContributorLocalServiceUtil.getContributorsCount());
 		
+		//get only the contributors for this project
 		List<Contributor> allContributorsForActualProject = new ArrayList<Contributor>();
 		for(Contributor contributor : allContributors){
 			if(contributor.getProjectName().equals(projectId)){
@@ -164,6 +158,8 @@ public class StudentHistoryViewModelBean implements Serializable{
     	int tatalLocDeletions = 0;;
     	int totalCommits = 0;
     	boolean isCurrentUser = false;
+    	//One Student can push into many repositories
+    	//therfore I can have here a List of many "current user"
     	List<Contributor> currentUser = new ArrayList<Contributor>();
     	for (Contributor contributor : allContributorsForActualProject){
     		totalLocAdditions += contributor.getLocAdditions();
@@ -177,13 +173,6 @@ public class StudentHistoryViewModelBean implements Serializable{
     	}
     	
     	if(isCurrentUser){
-//    		Contributor currentStudent = ContributorLocalServiceUtil.getCurrentUser(studentName);
-    		
-//    		if(currentStudent == null){
-//    			numberOfCommits = 00; 
-//    			locAdditions = 00;
-//    			locDeletions = 00;
-//    		}
     		int nrOfCommits = 0;
     		int nrlocAdditions = 0;
     		int nrlocDeletions = 0;
@@ -200,6 +189,9 @@ public class StudentHistoryViewModelBean implements Serializable{
     		noContributor = "";
     	}else{
     		noContributor = studentName + " ist kein Contributor";
+    		numberOfCommits = 0;
+    		locAdditions = 0;
+    		locDeletions = 0;
     	}
     	
     	numberOfTotalAdditions = totalLocAdditions;

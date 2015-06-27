@@ -285,11 +285,9 @@ public class CommitLocalServiceWrapper implements CommitLocalService,
     * @author Mihai Sava
     */
     @Override
-    public java.util.List<java.lang.String> getAllCommitsAsJsonString(
-        java.lang.String projectId, java.lang.String privateTocken)
+    public java.util.List<java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException {
-        return _commitLocalService.getAllCommitsAsJsonString(projectId,
-            privateTocken);
+        return _commitLocalService.getAllCommitsAsJsonString();
     }
 
     /**

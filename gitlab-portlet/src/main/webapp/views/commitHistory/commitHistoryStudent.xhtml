@@ -13,31 +13,31 @@
 	<p:panel header="General Data">
 		<h:panelGrid id="grid" columns="4" cellpadding="5" >
 			<h:outputText value="Anzahl Contributors:" />
-			<h:outputText value="#{studentHistoryViewModelBean.numberOfContributors}"/>
+			<h:outputText value="#{studentHistoryModelBean.numberOfContributors}"/>
 			<h:outputText value="" />
 			<h:outputText value="" />
 			
 			
 			<h:outputText value="Anzahl Total LOC:" />
-			<h:outputText value="#{studentHistoryViewModelBean.numberOfTotalAdditions}" />
+			<h:outputText value="#{studentHistoryModelBean.numberOfTotalAdditions}" />
 			<h:outputText value="Individuelle LOC:" />
-			<h:outputText value="#{studentHistoryViewModelBean.locAdditions}" />
+			<h:outputText value="#{studentHistoryModelBean.locAdditions}" />
 			
 			<h:outputText value="Anzahl Total gelöschte LOC:" />
-			<h:outputText value="#{studentHistoryViewModelBean.numberOfTotalDeletions}" />
+			<h:outputText value="#{studentHistoryModelBean.numberOfTotalDeletions}" />
 			<h:outputText value="Individuelle gelösche LOC:" />
-			<h:outputText value="#{studentHistoryViewModelBean.locDeletions}" />
+			<h:outputText value="#{studentHistoryModelBean.locDeletions}" />
 			
 			<h:outputText value="Anzahl Total Commits:" />
-			<h:outputText value="#{studentHistoryViewModelBean.numberOfTotalCommits}"/>
+			<h:outputText value="#{studentHistoryModelBean.numberOfTotalCommits}"/>
 			<h:outputText value="Individuelle Commits:" />
-			<h:outputText value="#{studentHistoryViewModelBean.numberOfCommits}"/>
+			<h:outputText value="#{studentHistoryModelBean.numberOfCommits}"/>
 		</h:panelGrid>
 	</p:panel>
 			
 	<h:form>
-		<h:outputText value="#{studentHistoryViewModelBean.noContributor}"/>
- 		<p:chart type="line" model="#{studentHistoryViewModelBean.lineCommitsHistory}" style="height:300px;" responsive="true" actionListener="#{studentHistoryViewModelBean.fatal}"/>
+		<h:outputText value="#{studentHistoryModelBean.noContributor}"/>
+ 		<p:chart type="line" model="#{studentHistoryModelBean.lineCommitsHistory}" style="height:300px;" responsive="true"/>
  	</h:form>
 		
 	</h:body>

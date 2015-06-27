@@ -66,7 +66,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @throws - IOException
 	 * @author Mihai Sava
 	 */
-	public List<String> getAllCommitsAsJsonString(String projectId, String privateTocken) throws IOException{
+	public List<String> getAllCommitsAsJsonString() throws IOException{
 		
 		Properties configFile = this.loadConfigFile();
 		String private_token = "private_token="+configFile.getProperty("private_token");

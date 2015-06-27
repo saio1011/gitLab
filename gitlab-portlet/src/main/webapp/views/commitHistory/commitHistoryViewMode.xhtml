@@ -11,7 +11,7 @@
 	<h:head />
 	<h:body>
 		<h:panelGroup id="wrapperPanel">
-    		<h:panelGroup id="student" rendered="#{not empty studentHistoryViewModelBean.studenthskaId}">
+    		<h:panelGroup id="student" rendered="#{not empty studentHistoryModelBean.studenthskaId}">
        			<ui:include src="commitHistoryStudent.xhtml" />
    			</h:panelGroup>
    			<h:panelGroup id="project" rendered="#{not empty projectHistoryModelBean.projectId}">

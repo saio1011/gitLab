@@ -9,7 +9,7 @@
 		</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.bridgeEventHandler</name>
-			<value>de.hska.wi.awp.datasource.event.StudentHistoryEventHandler</value>
+			<value>de.hska.wi.awp.datasource.event.CommitHistoryEventHandler</value>
 		</init-param>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -45,22 +45,21 @@
 		</supported-processing-event>
 	</portlet>
 	<portlet>
-		<portlet-name>GitLab Load Data</portlet-name>
-		<display-name>GitLab Load Data</display-name>
+		<portlet-name>GitLabLoadData</portlet-name>
+		<display-name>GitLabLoadData</display-name>
 		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/views/loadData/view.xhtml</value>
+			<value>/views/loadData/loadData.xhtml</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
 			<mime-type>text/html</mime-type>
-			<portlet-mode>view</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>Daten GitLab laden</title>
-			<short-title>Daten GitLab laden</short-title>
-			<keywords>Daten GitLab laden</keywords>
+			<title>GitLab - Load Data</title>
+			<short-title>Load Data GitLab</short-title>
+			<keywords>LoadDataGitLab</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

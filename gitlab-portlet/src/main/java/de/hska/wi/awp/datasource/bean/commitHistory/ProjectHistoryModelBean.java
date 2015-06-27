@@ -1,4 +1,4 @@
-package de.hska.wi.awp.datasource.bean.studenthistory;
+package de.hska.wi.awp.datasource.bean.commitHistory;
 
 import java.io.FileInputStream;
 import java.io.IOException;

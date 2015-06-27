@@ -151,9 +151,7 @@ public class CommitLocalServiceClpInvoker {
 
         _methodName46 = "getAllCommitsAsJsonString";
 
-        _methodParameterTypes46 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
+        _methodParameterTypes46 = new String[] {  };
 
         _methodName47 = "ParseCommitsFromJson";
 
@@ -281,8 +279,7 @@ public class CommitLocalServiceClpInvoker {
 
         if (_methodName46.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes46, parameterTypes)) {
-            return CommitLocalServiceUtil.getAllCommitsAsJsonString((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1]);
+            return CommitLocalServiceUtil.getAllCommitsAsJsonString();
         }
 
         if (_methodName47.equals(name) &&

@@ -275,10 +275,9 @@ public class CommitLocalServiceUtil {
     * @throws - IOException
     * @author Mihai Sava
     */
-    public static java.util.List<java.lang.String> getAllCommitsAsJsonString(
-        java.lang.String projectId, java.lang.String privateTocken)
+    public static java.util.List<java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException {
-        return getService().getAllCommitsAsJsonString(projectId, privateTocken);
+        return getService().getAllCommitsAsJsonString();
     }
 
     /**
