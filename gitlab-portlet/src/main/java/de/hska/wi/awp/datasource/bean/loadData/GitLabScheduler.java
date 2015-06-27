@@ -1,64 +1,53 @@
 package de.hska.wi.awp.datasource.bean.loadData;
 
-
-
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.json.JSONException;
 
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.messaging.MessageListenerException;
 
 import de.hska.wi.awp.datasource.service.CommitLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.ContributorLocalServiceUtil;
 
-
-@ManagedBean
-@RequestScoped
-public class GitLabLoadDataModelBean{
+/**
+ * 
+ * @author Mihai Sava
+ *
+ */
+public class GitLabScheduler implements MessageListener {
 	
 	/**
 	 * Logger Util
 	 */
-	private static Log log = LogFactoryUtil.getLog(GitLabLoadDataModelBean.class);
+	private static Log log = LogFactoryUtil.getLog(GitLabScheduler.class);
 	
 	/**
+	 * receives an Message every time the scheduler is called
+	 *
+	 * @param Message
+	 */
+	public void receive(Message arg0)
+		throws MessageListenerException {
+
+		// Here is the buisness logic to be written as per your requirement
+
+		this.fillDatabase();
+
+	}
+	
+	/**
+	 * updates the database with new gitlab datas
 	 * @author Mihai Sava
 	 */
-	public void addGitLabMockData() {
-		fillDatabase();
-    }
-     
-	
-	/**
-	 * displays a Message to show the user the current status
-	 * 
-	 * @param String
-	 *            , MessageText to display
-	 */
-    public void addMessage(String summary) {
-    	System.out.println(summary);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    /**
-     * updates the database with new gitlab datas
-     * 
-     * @author Mihai Sava
-     */
 	public void fillDatabase(){
-        addMessage("Datenbank GitLab wird neu geladen");
-        log.info("Database will be reloaded manually");
 		
+		log.info("Database will be reloaded from scheduler");
         //Load Contributors and Commits from GitLab
     	Map<String, String> contributorsAsJsonStringsWithProjectName = null;
     	Map<String, String> commitsAsJsonStringsWithProjectName = null;
@@ -79,9 +68,8 @@ public class GitLabLoadDataModelBean{
 			e.printStackTrace();
 		}
 		
-		System.out.println("Database GitLab is now up to date");
-        addMessage("Datenbank GitLab erfolgreich geladen");
-        log.info("Database GitLab is now up to date");
+		log.info("Database is up do date");
+		System.out.println("Database GitLab is now up to date from scheduler");
 	}
 
 }

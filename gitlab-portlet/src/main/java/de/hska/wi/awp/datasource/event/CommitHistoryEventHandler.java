@@ -12,6 +12,8 @@ import javax.portlet.faces.event.EventNavigationResult;
 import com.liferay.faces.bridge.event.EventPayloadWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import de.hska.wi.awp.datasource.bean.commitHistory.ProjectHistoryModelBean;
 import de.hska.wi.awp.datasource.bean.commitHistory.StudentHistoryModelBean;
@@ -27,6 +29,11 @@ import de.hska.wi.awp.datasource.infosys.service.StudentLocalServiceUtil;
 public class CommitHistoryEventHandler implements BridgeEventHandler{
 	
 	/**
+	 * Logger Util
+	 */
+	private static Log log = LogFactoryUtil.getLog(CommitHistoryEventHandler.class);
+	
+	/**
 	 * Handles the retrieved Event
 	 * Either student event ipc.studentSelected or project event ipc.projectSelected
 	 */
@@ -37,6 +44,7 @@ public class CommitHistoryEventHandler implements BridgeEventHandler{
 
          if (eventQName.equals("{http://liferay.com/events}ipc.studentSelected")) {
              System.out.print("EVENT RECIVED STUDENT");
+             log.info("Event Student recived");
              
              Serializable value = event.getValue();
              
@@ -72,11 +80,14 @@ public class CommitHistoryEventHandler implements BridgeEventHandler{
  			String fromAction = null;
  			String outcome = "ipc.studentSelected";
  			eventNavigationResult = new EventNavigationResult(fromAction, outcome);
+ 			
+ 			log.info("Event Student passed to the class");
              
          }
 
          if(eventQName.equals("{http://liferay.com/events}ipc.projectSelected")) {
         	 System.out.print("EVENT RECIVED PROJECT");
+        	 log.info("Event Project recived");
         	 
         	 Serializable value = event.getValue();
              
@@ -96,6 +107,8 @@ public class CommitHistoryEventHandler implements BridgeEventHandler{
   			String fromAction = null;
   			String outcome = "ipc.projectSelected";
   			eventNavigationResult = new EventNavigationResult(fromAction, outcome);
+  			
+  			log.info("Event Project passed to the class");
          }
          
          return eventNavigationResult;

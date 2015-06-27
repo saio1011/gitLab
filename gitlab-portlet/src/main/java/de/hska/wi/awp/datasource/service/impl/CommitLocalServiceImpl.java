@@ -28,6 +28,8 @@ import org.primefaces.util.Constants;
 
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -61,6 +63,8 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link de.hska.wi.awp.datasource.service.CommitLocalServiceUtil} to access the commit local service.
      */
 	
+	private static Log log = LogFactoryUtil.getLog(CommitLocalServiceImpl.class);
+	
 	/**
 	 * rest call to get all commits from gitlab for all projects
 	 * gitlab api has pagination and max entries pro page 
@@ -74,6 +78,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @author Mihai Sava
 	 */
 	public Map<String,String> getAllCommitsAsJsonString() throws IOException{
+		log.debug("BEGIN: getAllCommitsAsJsonString");
 		
 		Properties configFile = this.loadConfigFile();
 		String private_token = "private_token="+configFile.getProperty("private_token");
@@ -109,7 +114,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 				String repoId = Helper.getProjectId(repoName, private_token);
 				reposIdsWithProjectName.put(repoId, projectName);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				log.error("Project ID konnte nicht ermittelt werden");
 				e.printStackTrace();
 			}
 		}
@@ -157,6 +162,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 				}
 			}
 		}
+		log.debug("END: getAllCommitsAsJsonString");
 		return responsesWithProjectName;
 	}
 	
@@ -168,11 +174,11 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @author Mihai Sava 
 	 */
 	public void ParseCommitsFromJson(Map<String,String> jsonCommitsResponsesWithProjectName){
-		
+		log.debug("BEGIN: ParseCommitsFromJson");
 		try {
 			CommitLocalServiceUtil.deleteAllCommits();
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
+			log.error("CommitLocalServiceUtil.deleteAllCommits() war nicht erfolgreich");
 			e.printStackTrace();
 		}
 		
@@ -183,7 +189,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 			try {
 				jsonArrayCommits = new JSONArray(response);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				log.error("JSON -Parser Exception ");
 				e.printStackTrace();
 			}
 			
@@ -204,11 +210,12 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 				try {
 					CommitLocalServiceUtil.addCommit(newCommit);
 				} catch (SystemException e) {
-					// TODO Auto-generated catch block
+					log.error("CommitLocalServiceUtil.addCommit(newCommit) war nicht erfolgreich");
 					e.printStackTrace();
 				}
 			}
-		}	
+		}
+		log.debug("END: ParseCommitsFromJson");
 	}
 	
 	/**
@@ -221,6 +228,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @author Mihai Sava 
 	 */
     public LineChartModel initCommitHistoryModel(String studentName, String projectName) throws SystemException{
+    	log.debug("BEGIN: initCommitHistoryModel");
     	LineChartModel model = new LineChartModel();
     	
     	List<Commit> allCommitsFromThisStudent = CommitUtil.findByAuthorNameAndProjectName(studentName, projectName);
@@ -281,6 +289,8 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
     		student.set(datesAsStringSorted.get(zl), commitsMap.get(datesAsStringSorted.get(zl)));
     	}
         model.addSeries(student);
+        
+        log.debug("END: initCommitHistoryModel");
     	
     	return model;
     }
@@ -292,6 +302,8 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
      * @author Mihai Sava
      */
     public DonutChartModel initCommitDistributionModel(String projectName){
+    	log.debug("BEGIN: initCommitDistributionModel");
+    	
     	DonutChartModel commitDistributionModel = new DonutChartModel();
     	Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
     	
@@ -300,7 +312,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
     	try {
     		allCommitsForThisProject = CommitUtil.findByProjectName(projectName);
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
+			log.error("CommitUtil.findByProjectName ist fehlgeschlagen");
 			e.printStackTrace();
 		}
     	
@@ -309,7 +321,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
     	try {
 			allContributors = ContributorLocalServiceUtil.getContributors(0, ContributorLocalServiceUtil.getContributorsCount());
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
+			log.error("ContributorLocalServiceUtil.getContributors ist fehlgeschlagen");
 			e.printStackTrace();
 		}
     	
@@ -332,6 +344,8 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
     		circle1.put(contributor.getName(), numberOfCommits);
     	}
     	
+    	log.debug("END: initCommitDistributionModel");
+    	
     	commitDistributionModel.addCircle(circle1);
     	return commitDistributionModel;
     }
@@ -344,14 +358,18 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @author Mihai Sava
 	 */
     public Integer getAllCommitsForProjectId(String projectName){
+    	log.debug("BEGIN: getAllCommitsForProjectId");
+    	
     	//get all Commits from this project
     	List<Commit> allCommitsForThisProject = null;
     	try {
     		allCommitsForThisProject = CommitUtil.findByProjectName(projectName);
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
+			log.error("CommitUtil.findByProjectName ist fehlgeschlagen");
 			e.printStackTrace();
 		}
+    	
+    	log.debug("END: getAllCommitsForProjectId");
     	
     	Integer anzahlCommits = allCommitsForThisProject.size();
     	return anzahlCommits;
@@ -367,10 +385,12 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @author Mihai Sava
 	 */
 	public void deleteAllCommits() throws SystemException{
+		log.debug("BEGIN: deleteAllCommits");
 		List<Commit> allCommits = CommitLocalServiceUtil.getCommits(0, CommitLocalServiceUtil.getCommitsCount());
 		for(Commit commit : allCommits){
 			CommitLocalServiceUtil.deleteCommit(commit);
 		}
+		log.debug("END: deleteAllCommits");
 	}
 	
 	/**
@@ -378,6 +398,8 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 	 * @author Mihai Sava
 	 */
 	public Properties loadConfigFile(){
+		log.debug("BEGIN: loadConfigFile");
+		
     	Properties prop = new Properties();
     	InputStream input = null;
     	
@@ -403,7 +425,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 				}
         	}
         }
-    	
+    	log.debug("END: loadConfigFile");
     	return prop;
     }
 	

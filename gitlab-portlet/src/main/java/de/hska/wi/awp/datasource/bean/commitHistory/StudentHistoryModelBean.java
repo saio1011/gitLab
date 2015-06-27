@@ -16,6 +16,8 @@ import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.LineChartModel;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import de.hska.wi.awp.datasource.model.Contributor;
 import de.hska.wi.awp.datasource.service.CommitLocalServiceUtil;
@@ -34,6 +36,11 @@ public class StudentHistoryModelBean implements Serializable{
 	 * Serializable
 	 */
 	private static final long serialVersionUID = -1342820644463262367L;
+	
+	/**
+	 * Logger Util
+	 */
+	private static Log log = LogFactoryUtil.getLog(StudentHistoryModelBean.class);
 	
 	private LineChartModel lineCommitsHistory;
 	private String nameStudent;
@@ -117,7 +124,8 @@ public class StudentHistoryModelBean implements Serializable{
 	 * @author Mihai Sava
 	 */
 	private void createLineCommitsHistoryModel(String studentName, String projectId) throws SystemException, IOException, JSONException{
-
+		log.info("LineCommitsHistoryModel will be created");
+		
 		lineCommitsHistory = CommitLocalServiceUtil.initCommitHistoryModel(studentName, projectId);
 		lineCommitsHistory.setTitle("Commit History");
 		lineCommitsHistory.setLegendPosition("e");
@@ -126,6 +134,8 @@ public class StudentHistoryModelBean implements Serializable{
         Axis yAxis = lineCommitsHistory.getAxis(AxisType.Y);
         yAxis.setLabel("Anzahl Commits");
         yAxis.setMin(0);
+        
+        log.info("LineCommitsHistoryModel was created");
 	}
 
 	/**
@@ -138,7 +148,8 @@ public class StudentHistoryModelBean implements Serializable{
 	 * @throws Exception 
      */
     private void createHeaderModel(String studentName, String projectId) throws Exception{
-  	
+    	log.info("HeaderModel will be created");
+    	
     	//get all Contributors for all projects
 		List<Contributor> allContributors = ContributorLocalServiceUtil.getContributors(0, ContributorLocalServiceUtil.getContributorsCount());
 		
@@ -195,5 +206,7 @@ public class StudentHistoryModelBean implements Serializable{
     	numberOfTotalAdditions = totalLocAdditions;
     	numberOfTotalDeletions = tatalLocDeletions;
     	numberOfTotalCommits = totalCommits;
+    	
+    	log.info("HeaderModel was created");
     }
 }

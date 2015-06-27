@@ -15,7 +15,6 @@
 			<h:outputText value="Anzahl Commits" />
 			<h:outputText value="#{projectHistoryModelBean.totalCommits}"/>
 		</h:panelGrid>
-		
 	</p:panel>
 	
 	<p:chart type="donut" model="#{projectHistoryModelBean.commitDistributionModel}" style="height:300px;" responsive="true" />

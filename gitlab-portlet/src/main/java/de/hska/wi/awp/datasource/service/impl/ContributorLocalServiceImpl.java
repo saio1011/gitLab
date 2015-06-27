@@ -18,6 +18,8 @@ import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -51,6 +53,12 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
      */
 	
 	/**
+	 * Logger Util
+	 */
+	private static Log log = LogFactoryUtil.getLog(ContributorLocalServiceImpl.class);
+
+	
+	/**
 	 * rest call to get all contributors (from gitlab) - from all projects
 	 * gitlab api has pagination and max entries pro page
 	 * 
@@ -60,6 +68,7 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 	 * @author Mihai Sava
 	 */
 	public Map<String,String> getContributors() throws IOException{
+		log.debug("BEGIN: getContributors");
 		
 		Properties configFile = this.loadConfigFile();
 		String private_token = "private_token="+configFile.getProperty("private_token");
@@ -95,7 +104,7 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 				String repoId = Helper.getProjectId(repoName, private_token);
 				reposIdsWithProjectName.put(repoId, projectName);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				log.error("Helper.getProjectId fehlgeschlagen");
 				e.printStackTrace();
 			}
 		}
@@ -117,7 +126,7 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 			String responseBody = response.getEntity(String.class);
 			responsesWithProjectName.put(responseBody, projectName);
 		}
-		
+		log.debug("END: getContributors");
 		return responsesWithProjectName;
 	}
 	
@@ -130,6 +139,7 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 	 * @author Mihai Sava
 	 */
 	public void ParseContributorsFromJson(Map<String,String> jsonContributorsResponsesWithProjectName) throws JSONException, SystemException{
+		log.debug("BEGIN: ParseContributorsFromJson");
 		
 		ContributorLocalServiceUtil.deleleAllContributors();
 		
@@ -151,13 +161,18 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 			}
 			kreisNr += 100;
 		}
+		log.debug("END: ParseContributorsFromJson");
 	}
 	
 	/**
 	 * get current user
 	 */
 	public Contributor getCurrentUser(String studentName) throws NoSuchContributorException, SystemException{
+		log.debug("BEGIN: getCurrentUser");
+		
 		Contributor currentStudent = ContributorUtil.findByName(studentName);
+		
+		log.debug("END: getCurrentUser");
 		return currentStudent;
 	}
 	
@@ -171,11 +186,15 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 	 * @author Mihai Sava
 	 */
 	public void deleleAllContributors() throws SystemException{
+		log.debug("BEGIN: deleleAllContributors");
+		
 		List<Contributor> allContributors = ContributorLocalServiceUtil.getContributors(0, ContributorLocalServiceUtil.getContributorsCount());
 		
 		for(int zl = 0; zl < allContributors.size(); zl++){
 			ContributorLocalServiceUtil.deleteContributor(allContributors.get(zl));
 		}
+		
+		log.debug("END: deleleAllContributors");
 	}
 	
 	
@@ -184,6 +203,8 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 	 * @author Mihai Sava
 	 */
 	public Properties loadConfigFile(){
+		log.debug("BEGIN: loadConfigFile");
+		
     	Properties prop = new Properties();
     	InputStream input = null;
     	
@@ -203,12 +224,13 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
         } finally{
         	if(input!=null){
         		try {
-				input.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+        			input.close();
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
         	}
         }
+    	log.debug("END: loadConfigFile");
     	return prop;
     }
 }

@@ -22,6 +22,8 @@ import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.LineChartModel;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import de.hska.wi.awp.datasource.NoSuchContributorException;
 import de.hska.wi.awp.datasource.model.Commit;
@@ -44,6 +46,11 @@ public class ProjectHistoryModelBean implements Serializable{
 	private String projectId;
 	private Integer totalCommits;
 	private DonutChartModel commitDistributionModel;
+	
+	/**
+	 * Logger Util
+	 */
+	private static Log log = LogFactoryUtil.getLog(ProjectHistoryModelBean.class);
 
 
 	public Integer getTotalCommits() {
@@ -70,6 +77,7 @@ public class ProjectHistoryModelBean implements Serializable{
 	 * @author Mihai Sava
 	 */
 	private void createCommitHistoryDistributionModel(String projectName){
+		log.info("CommitHistoryDistributionModel will be created");
 		
 		commitDistributionModel = CommitLocalServiceUtil.initCommitDistributionModel(projectName);
 		commitDistributionModel.setTitle("Verteilung der Commits pro Student");
@@ -78,6 +86,8 @@ public class ProjectHistoryModelBean implements Serializable{
 		commitDistributionModel.setShowDataLabels(true);
 		commitDistributionModel.setDataFormat("value");
 		commitDistributionModel.setShadow(false);
+		
+		log.info("CommitHistoryDistributionModel is was created");
 	}
 	
 	/**
@@ -88,7 +98,11 @@ public class ProjectHistoryModelBean implements Serializable{
 	 * @author Mihai Sava
 	 */
 	public void getNumberOfCommitsForThisProject(String projectName){
+		log.info("getNumberOfCommitsForThisProject will be set");
+		
 		Integer nrOfCommits = CommitLocalServiceUtil.getAllCommitsForProjectId(projectName);
 		totalCommits = nrOfCommits;
+		
+		log.info("getNumberOfCommitsForThisProject it was set");
 	}
 }
