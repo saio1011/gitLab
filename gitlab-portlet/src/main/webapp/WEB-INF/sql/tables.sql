@@ -3,7 +3,8 @@ create table gitlab_Commit (
 	authorName VARCHAR(75) null,
 	authorEmail VARCHAR(75) null,
 	titleCommit VARCHAR(75) null,
-	createdAt VARCHAR(75) null
+	createdAt VARCHAR(75) null,
+	projectName VARCHAR(75) null
 );
 
 create table gitlab_Contributor (

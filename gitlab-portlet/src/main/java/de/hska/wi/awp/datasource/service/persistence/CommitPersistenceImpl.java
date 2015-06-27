@@ -75,7 +75,7 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
             CommitModelImpl.FINDER_CACHE_ENABLED, CommitImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAuthorName",
             new String[] {
-                String.class.getName(),
+                String.class.getName(), String.class.getName(),
                 
             Integer.class.getName(), Integer.class.getName(),
                 OrderByComparator.class.getName()
@@ -84,15 +84,19 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
         new FinderPath(CommitModelImpl.ENTITY_CACHE_ENABLED,
             CommitModelImpl.FINDER_CACHE_ENABLED, CommitImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAuthorName",
-            new String[] { String.class.getName() },
-            CommitModelImpl.AUTHORNAME_COLUMN_BITMASK);
+            new String[] { String.class.getName(), String.class.getName() },
+            CommitModelImpl.AUTHORNAME_COLUMN_BITMASK |
+            CommitModelImpl.PROJECTNAME_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_AUTHORNAME = new FinderPath(CommitModelImpl.ENTITY_CACHE_ENABLED,
             CommitModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAuthorName",
-            new String[] { String.class.getName() });
-    private static final String _FINDER_COLUMN_AUTHORNAME_AUTHORNAME_1 = "commit.authorName IS NULL";
-    private static final String _FINDER_COLUMN_AUTHORNAME_AUTHORNAME_2 = "commit.authorName = ?";
-    private static final String _FINDER_COLUMN_AUTHORNAME_AUTHORNAME_3 = "(commit.authorName IS NULL OR commit.authorName = '')";
+            new String[] { String.class.getName(), String.class.getName() });
+    private static final String _FINDER_COLUMN_AUTHORNAME_AUTHORNAME_1 = "commit.authorName IS NULL AND ";
+    private static final String _FINDER_COLUMN_AUTHORNAME_AUTHORNAME_2 = "commit.authorName = ? AND ";
+    private static final String _FINDER_COLUMN_AUTHORNAME_AUTHORNAME_3 = "(commit.authorName IS NULL OR commit.authorName = '') AND ";
+    private static final String _FINDER_COLUMN_AUTHORNAME_PROJECTNAME_1 = "commit.projectName IS NULL";
+    private static final String _FINDER_COLUMN_AUTHORNAME_PROJECTNAME_2 = "commit.projectName = ?";
+    private static final String _FINDER_COLUMN_AUTHORNAME_PROJECTNAME_3 = "(commit.projectName IS NULL OR commit.projectName = '')";
     private static final String _SQL_SELECT_COMMIT = "SELECT commit FROM Commit commit";
     private static final String _SQL_SELECT_COMMIT_WHERE = "SELECT commit FROM Commit commit WHERE ";
     private static final String _SQL_COUNT_COMMIT = "SELECT COUNT(commit) FROM Commit commit";
@@ -127,46 +131,49 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
     }
 
     /**
-     * Returns all the commits where authorName = &#63;.
+     * Returns all the commits where authorName = &#63; and projectName = &#63;.
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @return the matching commits
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<Commit> findByAuthorName(String authorName)
+    public List<Commit> findByAuthorName(String authorName, String projectName)
         throws SystemException {
-        return findByAuthorName(authorName, QueryUtil.ALL_POS,
+        return findByAuthorName(authorName, projectName, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
 
     /**
-     * Returns a range of all the commits where authorName = &#63;.
+     * Returns a range of all the commits where authorName = &#63; and projectName = &#63;.
      *
      * <p>
      * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link de.hska.wi.awp.datasource.model.impl.CommitModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @param start the lower bound of the range of commits
      * @param end the upper bound of the range of commits (not inclusive)
      * @return the range of matching commits
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<Commit> findByAuthorName(String authorName, int start, int end)
-        throws SystemException {
-        return findByAuthorName(authorName, start, end, null);
+    public List<Commit> findByAuthorName(String authorName, String projectName,
+        int start, int end) throws SystemException {
+        return findByAuthorName(authorName, projectName, start, end, null);
     }
 
     /**
-     * Returns an ordered range of all the commits where authorName = &#63;.
+     * Returns an ordered range of all the commits where authorName = &#63; and projectName = &#63;.
      *
      * <p>
      * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link de.hska.wi.awp.datasource.model.impl.CommitModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @param start the lower bound of the range of commits
      * @param end the upper bound of the range of commits (not inclusive)
      * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -174,8 +181,9 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<Commit> findByAuthorName(String authorName, int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
+    public List<Commit> findByAuthorName(String authorName, String projectName,
+        int start, int end, OrderByComparator orderByComparator)
+        throws SystemException {
         boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -184,10 +192,14 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
                 (orderByComparator == null)) {
             pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORNAME;
-            finderArgs = new Object[] { authorName };
+            finderArgs = new Object[] { authorName, projectName };
         } else {
             finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_AUTHORNAME;
-            finderArgs = new Object[] { authorName, start, end, orderByComparator };
+            finderArgs = new Object[] {
+                    authorName, projectName,
+                    
+                    start, end, orderByComparator
+                };
         }
 
         List<Commit> list = (List<Commit>) FinderCacheUtil.getResult(finderPath,
@@ -195,7 +207,8 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
 
         if ((list != null) && !list.isEmpty()) {
             for (Commit commit : list) {
-                if (!Validator.equals(authorName, commit.getAuthorName())) {
+                if (!Validator.equals(authorName, commit.getAuthorName()) ||
+                        !Validator.equals(projectName, commit.getProjectName())) {
                     list = null;
 
                     break;
@@ -207,10 +220,10 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
             StringBundler query = null;
 
             if (orderByComparator != null) {
-                query = new StringBundler(3 +
+                query = new StringBundler(4 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(3);
+                query = new StringBundler(4);
             }
 
             query.append(_SQL_SELECT_COMMIT_WHERE);
@@ -225,6 +238,18 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
                 bindAuthorName = true;
 
                 query.append(_FINDER_COLUMN_AUTHORNAME_AUTHORNAME_2);
+            }
+
+            boolean bindProjectName = false;
+
+            if (projectName == null) {
+                query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_1);
+            } else if (projectName.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_3);
+            } else {
+                bindProjectName = true;
+
+                query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_2);
             }
 
             if (orderByComparator != null) {
@@ -248,6 +273,10 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
 
                 if (bindAuthorName) {
                     qPos.add(authorName);
+                }
+
+                if (bindProjectName) {
+                    qPos.add(projectName);
                 }
 
                 if (!pagination) {
@@ -278,30 +307,35 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
     }
 
     /**
-     * Returns the first commit in the ordered set where authorName = &#63;.
+     * Returns the first commit in the ordered set where authorName = &#63; and projectName = &#63;.
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching commit
      * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public Commit findByAuthorName_First(String authorName,
+    public Commit findByAuthorName_First(String authorName, String projectName,
         OrderByComparator orderByComparator)
         throws NoSuchCommitException, SystemException {
-        Commit commit = fetchByAuthorName_First(authorName, orderByComparator);
+        Commit commit = fetchByAuthorName_First(authorName, projectName,
+                orderByComparator);
 
         if (commit != null) {
             return commit;
         }
 
-        StringBundler msg = new StringBundler(4);
+        StringBundler msg = new StringBundler(6);
 
         msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
         msg.append("authorName=");
         msg.append(authorName);
+
+        msg.append(", projectName=");
+        msg.append(projectName);
 
         msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -309,74 +343,19 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
     }
 
     /**
-     * Returns the first commit in the ordered set where authorName = &#63;.
+     * Returns the first commit in the ordered set where authorName = &#63; and projectName = &#63;.
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching commit, or <code>null</code> if a matching commit could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public Commit fetchByAuthorName_First(String authorName,
-        OrderByComparator orderByComparator) throws SystemException {
-        List<Commit> list = findByAuthorName(authorName, 0, 1, orderByComparator);
-
-        if (!list.isEmpty()) {
-            return list.get(0);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the last commit in the ordered set where authorName = &#63;.
-     *
-     * @param authorName the author name
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the last matching commit
-     * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public Commit findByAuthorName_Last(String authorName,
-        OrderByComparator orderByComparator)
-        throws NoSuchCommitException, SystemException {
-        Commit commit = fetchByAuthorName_Last(authorName, orderByComparator);
-
-        if (commit != null) {
-            return commit;
-        }
-
-        StringBundler msg = new StringBundler(4);
-
-        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-        msg.append("authorName=");
-        msg.append(authorName);
-
-        msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-        throw new NoSuchCommitException(msg.toString());
-    }
-
-    /**
-     * Returns the last commit in the ordered set where authorName = &#63;.
-     *
-     * @param authorName the author name
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the last matching commit, or <code>null</code> if a matching commit could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public Commit fetchByAuthorName_Last(String authorName,
-        OrderByComparator orderByComparator) throws SystemException {
-        int count = countByAuthorName(authorName);
-
-        if (count == 0) {
-            return null;
-        }
-
-        List<Commit> list = findByAuthorName(authorName, count - 1, count,
+        String projectName, OrderByComparator orderByComparator)
+        throws SystemException {
+        List<Commit> list = findByAuthorName(authorName, projectName, 0, 1,
                 orderByComparator);
 
         if (!list.isEmpty()) {
@@ -387,10 +366,75 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
     }
 
     /**
-     * Returns the commits before and after the current commit in the ordered set where authorName = &#63;.
+     * Returns the last commit in the ordered set where authorName = &#63; and projectName = &#63;.
+     *
+     * @param authorName the author name
+     * @param projectName the project name
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching commit
+     * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a matching commit could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Commit findByAuthorName_Last(String authorName, String projectName,
+        OrderByComparator orderByComparator)
+        throws NoSuchCommitException, SystemException {
+        Commit commit = fetchByAuthorName_Last(authorName, projectName,
+                orderByComparator);
+
+        if (commit != null) {
+            return commit;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("authorName=");
+        msg.append(authorName);
+
+        msg.append(", projectName=");
+        msg.append(projectName);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchCommitException(msg.toString());
+    }
+
+    /**
+     * Returns the last commit in the ordered set where authorName = &#63; and projectName = &#63;.
+     *
+     * @param authorName the author name
+     * @param projectName the project name
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching commit, or <code>null</code> if a matching commit could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Commit fetchByAuthorName_Last(String authorName, String projectName,
+        OrderByComparator orderByComparator) throws SystemException {
+        int count = countByAuthorName(authorName, projectName);
+
+        if (count == 0) {
+            return null;
+        }
+
+        List<Commit> list = findByAuthorName(authorName, projectName,
+                count - 1, count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the commits before and after the current commit in the ordered set where authorName = &#63; and projectName = &#63;.
      *
      * @param commitId the primary key of the current commit
      * @param authorName the author name
+     * @param projectName the project name
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next commit
      * @throws de.hska.wi.awp.datasource.NoSuchCommitException if a commit with the primary key could not be found
@@ -398,7 +442,8 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
      */
     @Override
     public Commit[] findByAuthorName_PrevAndNext(String commitId,
-        String authorName, OrderByComparator orderByComparator)
+        String authorName, String projectName,
+        OrderByComparator orderByComparator)
         throws NoSuchCommitException, SystemException {
         Commit commit = findByPrimaryKey(commitId);
 
@@ -410,12 +455,12 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
             Commit[] array = new CommitImpl[3];
 
             array[0] = getByAuthorName_PrevAndNext(session, commit, authorName,
-                    orderByComparator, true);
+                    projectName, orderByComparator, true);
 
             array[1] = commit;
 
             array[2] = getByAuthorName_PrevAndNext(session, commit, authorName,
-                    orderByComparator, false);
+                    projectName, orderByComparator, false);
 
             return array;
         } catch (Exception e) {
@@ -426,8 +471,8 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
     }
 
     protected Commit getByAuthorName_PrevAndNext(Session session,
-        Commit commit, String authorName, OrderByComparator orderByComparator,
-        boolean previous) {
+        Commit commit, String authorName, String projectName,
+        OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -449,6 +494,18 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
             bindAuthorName = true;
 
             query.append(_FINDER_COLUMN_AUTHORNAME_AUTHORNAME_2);
+        }
+
+        boolean bindProjectName = false;
+
+        if (projectName == null) {
+            query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_1);
+        } else if (projectName.equals(StringPool.BLANK)) {
+            query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_3);
+        } else {
+            bindProjectName = true;
+
+            query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_2);
         }
 
         if (orderByComparator != null) {
@@ -516,6 +573,10 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
             qPos.add(authorName);
         }
 
+        if (bindProjectName) {
+            qPos.add(projectName);
+        }
+
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(commit);
 
@@ -534,37 +595,41 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
     }
 
     /**
-     * Removes all the commits where authorName = &#63; from the database.
+     * Removes all the commits where authorName = &#63; and projectName = &#63; from the database.
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public void removeByAuthorName(String authorName) throws SystemException {
-        for (Commit commit : findByAuthorName(authorName, QueryUtil.ALL_POS,
-                QueryUtil.ALL_POS, null)) {
+    public void removeByAuthorName(String authorName, String projectName)
+        throws SystemException {
+        for (Commit commit : findByAuthorName(authorName, projectName,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(commit);
         }
     }
 
     /**
-     * Returns the number of commits where authorName = &#63;.
+     * Returns the number of commits where authorName = &#63; and projectName = &#63;.
      *
      * @param authorName the author name
+     * @param projectName the project name
      * @return the number of matching commits
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public int countByAuthorName(String authorName) throws SystemException {
+    public int countByAuthorName(String authorName, String projectName)
+        throws SystemException {
         FinderPath finderPath = FINDER_PATH_COUNT_BY_AUTHORNAME;
 
-        Object[] finderArgs = new Object[] { authorName };
+        Object[] finderArgs = new Object[] { authorName, projectName };
 
         Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
                 this);
 
         if (count == null) {
-            StringBundler query = new StringBundler(2);
+            StringBundler query = new StringBundler(3);
 
             query.append(_SQL_COUNT_COMMIT_WHERE);
 
@@ -580,6 +645,18 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
                 query.append(_FINDER_COLUMN_AUTHORNAME_AUTHORNAME_2);
             }
 
+            boolean bindProjectName = false;
+
+            if (projectName == null) {
+                query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_1);
+            } else if (projectName.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_3);
+            } else {
+                bindProjectName = true;
+
+                query.append(_FINDER_COLUMN_AUTHORNAME_PROJECTNAME_2);
+            }
+
             String sql = query.toString();
 
             Session session = null;
@@ -593,6 +670,10 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
 
                 if (bindAuthorName) {
                     qPos.add(authorName);
+                }
+
+                if (bindProjectName) {
+                    qPos.add(projectName);
                 }
 
                 count = (Long) q.uniqueResult();
@@ -821,7 +902,8 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
             if ((commitModelImpl.getColumnBitmask() &
                     FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORNAME.getColumnBitmask()) != 0) {
                 Object[] args = new Object[] {
-                        commitModelImpl.getOriginalAuthorName()
+                        commitModelImpl.getOriginalAuthorName(),
+                        commitModelImpl.getOriginalProjectName()
                     };
 
                 FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AUTHORNAME,
@@ -829,7 +911,10 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
                 FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORNAME,
                     args);
 
-                args = new Object[] { commitModelImpl.getAuthorName() };
+                args = new Object[] {
+                        commitModelImpl.getAuthorName(),
+                        commitModelImpl.getProjectName()
+                    };
 
                 FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AUTHORNAME,
                     args);
@@ -859,6 +944,7 @@ public class CommitPersistenceImpl extends BasePersistenceImpl<Commit>
         commitImpl.setAuthorEmail(commit.getAuthorEmail());
         commitImpl.setTitleCommit(commit.getTitleCommit());
         commitImpl.setCreatedAt(commit.getCreatedAt());
+        commitImpl.setProjectName(commit.getProjectName());
 
         return commitImpl;
     }

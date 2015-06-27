@@ -41,6 +41,7 @@ public class CommitWrapper implements Commit, ModelWrapper<Commit> {
         attributes.put("authorEmail", getAuthorEmail());
         attributes.put("titleCommit", getTitleCommit());
         attributes.put("createdAt", getCreatedAt());
+        attributes.put("projectName", getProjectName());
 
         return attributes;
     }
@@ -75,6 +76,12 @@ public class CommitWrapper implements Commit, ModelWrapper<Commit> {
 
         if (createdAt != null) {
             setCreatedAt(createdAt);
+        }
+
+        String projectName = (String) attributes.get("projectName");
+
+        if (projectName != null) {
+            setProjectName(projectName);
         }
     }
 
@@ -196,6 +203,26 @@ public class CommitWrapper implements Commit, ModelWrapper<Commit> {
     @Override
     public void setCreatedAt(java.lang.String createdAt) {
         _commit.setCreatedAt(createdAt);
+    }
+
+    /**
+    * Returns the project name of this commit.
+    *
+    * @return the project name of this commit
+    */
+    @Override
+    public java.lang.String getProjectName() {
+        return _commit.getProjectName();
+    }
+
+    /**
+    * Sets the project name of this commit.
+    *
+    * @param projectName the project name of this commit
+    */
+    @Override
+    public void setProjectName(java.lang.String projectName) {
+        _commit.setProjectName(projectName);
     }
 
     @Override

@@ -14,6 +14,7 @@
 			<basic name="authorEmail" />
 			<basic name="titleCommit" />
 			<basic name="createdAt" />
+			<basic name="projectName" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

@@ -20,8 +20,10 @@
         <column name="authorEmail" type="String"></column>
         <column name="titleCommit" type="String"></column>
         <column name="createdAt" type="String"></column>
+        <column name="projectName" type="String"></column>
         <finder name="AuthorName" return-type="Collection">
-        	<finder-column name="authorName"/>
+        	<finder-column name="authorName" />
+        	<finder-column name="projectName" />
         </finder>
     </entity>
 </service-builder>

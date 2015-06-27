@@ -24,10 +24,11 @@ public class CommitCacheModel implements CacheModel<Commit>, Externalizable {
     public String authorEmail;
     public String titleCommit;
     public String createdAt;
+    public String projectName;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{commitId=");
         sb.append(commitId);
@@ -39,6 +40,8 @@ public class CommitCacheModel implements CacheModel<Commit>, Externalizable {
         sb.append(titleCommit);
         sb.append(", createdAt=");
         sb.append(createdAt);
+        sb.append(", projectName=");
+        sb.append(projectName);
         sb.append("}");
 
         return sb.toString();
@@ -78,6 +81,12 @@ public class CommitCacheModel implements CacheModel<Commit>, Externalizable {
             commitImpl.setCreatedAt(createdAt);
         }
 
+        if (projectName == null) {
+            commitImpl.setProjectName(StringPool.BLANK);
+        } else {
+            commitImpl.setProjectName(projectName);
+        }
+
         commitImpl.resetOriginalValues();
 
         return commitImpl;
@@ -90,6 +99,7 @@ public class CommitCacheModel implements CacheModel<Commit>, Externalizable {
         authorEmail = objectInput.readUTF();
         titleCommit = objectInput.readUTF();
         createdAt = objectInput.readUTF();
+        projectName = objectInput.readUTF();
     }
 
     @Override
@@ -123,6 +133,12 @@ public class CommitCacheModel implements CacheModel<Commit>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(createdAt);
+        }
+
+        if (projectName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(projectName);
         }
     }
 }

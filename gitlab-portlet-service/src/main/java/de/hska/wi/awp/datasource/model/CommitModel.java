@@ -118,6 +118,21 @@ public interface CommitModel extends BaseModel<Commit> {
      */
     public void setCreatedAt(String createdAt);
 
+    /**
+     * Returns the project name of this commit.
+     *
+     * @return the project name of this commit
+     */
+    @AutoEscape
+    public String getProjectName();
+
+    /**
+     * Sets the project name of this commit.
+     *
+     * @param projectName the project name of this commit
+     */
+    public void setProjectName(String projectName);
+
     @Override
     public boolean isNew();
 

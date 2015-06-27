@@ -27,6 +27,7 @@ import de.hska.wi.awp.datasource.model.Contributor;
 import de.hska.wi.awp.datasource.service.ContributorLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.base.ContributorLocalServiceBaseImpl;
 import de.hska.wi.awp.datasource.service.persistence.ContributorUtil;
+import de.hska.wi.awp.datasource.utils.Helper;
 
 /**
  * The implementation of the contributor local service.
@@ -50,11 +51,11 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
      */
 	
 	/**
-	 * rest call to get all contributors (from gitlab) - from one project
+	 * rest call to get all contributors (from gitlab) - from all projects
 	 * gitlab api has pagination and max entries pro page
 	 * 
 	 * @param -
-	 * @return String - json list with all contributors 
+	 * @return Map<String,String> - json responses with all contributors and project names
 	 * @throws IOException
 	 * @author Mihai Sava
 	 */
@@ -75,50 +76,31 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 			anzahlReposProjekt.put(projektName, Integer.parseInt(configFile.getProperty(projektName+"_AnzahlRepos")));
 		}
 		
-		//get names of repositories
-		List<String> reposNames = new ArrayList<String>();
+		//get names of repositories		
 		Map<String,String> reposNamesWithProjectName = new HashMap<String, String>();
 		for (Map.Entry<String, Integer> entry : anzahlReposProjekt.entrySet()) {
 			String key = entry.getKey();
 		    int value = entry.getValue();
 		    for(int zl = 1; zl <= value; zl++){
-		    	reposNames.add(configFile.getProperty(key+"_Repo"+zl));
 		    	reposNamesWithProjectName.put(configFile.getProperty(key+"_Repo"+zl), key);
 		    }
 		}
-				
+		
 		//get repos Ids
-//		List<String> reposIds = new ArrayList<String>();
-//		for(String repoName : reposNames){
-//			try {
-//				String repoId = this.getProjectId(repoName, private_token);
-//				reposIds.add(repoId);
-//			} catch (JSONException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 		Map<String,String> reposIdsWithProjectName = new HashMap<String, String>();
 		for (Map.Entry<String, String> entry : reposNamesWithProjectName.entrySet()) {
 			String repoName = entry.getKey();
 			String projectName = entry.getValue();
 			try {
-				String repoId = this.getProjectId(repoName, private_token);
+				String repoId = Helper.getProjectId(repoName, private_token);
 				reposIdsWithProjectName.put(repoId, projectName);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-//		//print
-//		for (Map.Entry<String, String> entry : reposIdsWithProjectName.entrySet()) {
-//			System.out.println("--------->");
-//			System.out.println(entry.getKey()+ "->" + entry.getValue());
-//		}
 		
-		
-		//get Reguests for each repo
-		List<String> responses = new ArrayList<String>();
+		//get Reguest for each repo
 		Map<String,String> responsesWithProjectName = new HashMap<String, String>();
 		for(Map.Entry<String, String> entry : reposIdsWithProjectName.entrySet()){
 			String repoId = entry.getKey();
@@ -133,34 +115,16 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 					.get(ClientResponse.class);
 	
 			String responseBody = response.getEntity(String.class);
-			responses.add(responseBody);
 			responsesWithProjectName.put(responseBody, projectName);
 		}
 		
-//		//print
-//		for (Map.Entry<String, String> entry : responsesWithProjectName.entrySet()) {
-//		System.out.println("--------->");
-//		System.out.println(entry.getKey()+ "->" + entry.getValue());
-//	}
 		return responsesWithProjectName;
-//		String url = de.hska.wi.awp.datasource.utils.Constants.GITLAB_PATH_PROJECTS + projectId + de.hska.wi.awp.datasource.utils.Constants.GITLAB_PATH_CONTRIBUTORS + "?" + privateTocken;
-//		
-//		Client client = Client.create();
-//		WebResource webResource = client.resource(url);
-//
-//		ClientResponse response = webResource
-//				.type("application/json").accept("application/json")
-//				.get(ClientResponse.class);
-//
-//		String responseBody = response.getEntity(String.class);
-//		
-//		return responseBody;
 	}
 	
 	/**
 	 * parse contributors to java objects and save the parsed objects into database
 	 * 
-	 * @param String jsonContributors - all contributors as json list
+	 * @param Map<String,String> jsonContributorsResponsesWithProjectName - all contributors as json responses for each project name
 	 * @return void
 	 * @throws JSONException, SystemException
 	 * @author Mihai Sava
@@ -187,23 +151,11 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 			}
 			kreisNr += 100;
 		}
-		
-//		ContributorLocalServiceUtil.deleleAllContributors();
-//		
-//		JSONArray jsonArrayContributors = new JSONArray(jsonContributors);
-//		
-//		for (int zl = 0; zl<jsonArrayContributors.length(); zl++){
-//			Contributor newContributor = ContributorLocalServiceUtil.createContributor(zl+1);
-//			newContributor.setCommits(jsonArrayContributors.getJSONObject(zl).getInt("commits"));
-//			newContributor.setEmail(jsonArrayContributors.getJSONObject(zl).getString("email"));
-//			newContributor.setName(jsonArrayContributors.getJSONObject(zl).getString("name"));
-//			newContributor.setLocAdditions(jsonArrayContributors.getJSONObject(zl).getInt("additions"));
-//			newContributor.setLocDeletions(jsonArrayContributors.getJSONObject(zl).getInt("deletions"));
-//			
-//			ContributorLocalServiceUtil.addContributor(newContributor);
-//		}
 	}
 	
+	/**
+	 * get current user
+	 */
 	public Contributor getCurrentUser(String studentName) throws NoSuchContributorException, SystemException{
 		Contributor currentStudent = ContributorUtil.findByName(studentName);
 		return currentStudent;
@@ -226,31 +178,12 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 		}
 	}
 	
-	public String getProjectId(String projectName, String privateTocken) throws JSONException{
-		String url = de.hska.wi.awp.datasource.utils.Constants.GITLAB_FIND_POJECT_BY_NAME + projectName + "?" + privateTocken;
-		
-		Client client = Client.create();
-		WebResource webResource = client.resource(url);
-
-		ClientResponse response = webResource
-				.type("application/json").accept("application/json")
-				.get(ClientResponse.class);
-
-		String responseBody = response.getEntity(String.class);
-		
-		JSONArray jsonArrayCommits = new JSONArray(responseBody);
-		String projectId = "";
-		for (int zl = 0; zl<jsonArrayCommits.length(); zl++){
-			if(projectName.equals(jsonArrayCommits.getJSONObject(zl).getString("name")) && projectName.equals(jsonArrayCommits.getJSONObject(zl).getString("path"))){
-				projectId = jsonArrayCommits.getJSONObject(zl).getString("id");
-			}
-		}
-		
-		return projectId;
-	}
 	
+	/**
+	 * load Property File
+	 * @author Mihai Sava
+	 */
 	public Properties loadConfigFile(){
-    	////
     	Properties prop = new Properties();
     	InputStream input = null;
     	
@@ -276,7 +209,6 @@ public class ContributorLocalServiceImpl extends ContributorLocalServiceBaseImpl
 			}
         	}
         }
-    	
     	return prop;
     }
 }

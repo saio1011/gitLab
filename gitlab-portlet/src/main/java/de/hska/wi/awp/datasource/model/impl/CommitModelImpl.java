@@ -49,9 +49,10 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
             { "authorName", Types.VARCHAR },
             { "authorEmail", Types.VARCHAR },
             { "titleCommit", Types.VARCHAR },
-            { "createdAt", Types.VARCHAR }
+            { "createdAt", Types.VARCHAR },
+            { "projectName", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table gitlab_Commit (commitId VARCHAR(75) not null primary key,authorName VARCHAR(75) null,authorEmail VARCHAR(75) null,titleCommit VARCHAR(75) null,createdAt VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table gitlab_Commit (commitId VARCHAR(75) not null primary key,authorName VARCHAR(75) null,authorEmail VARCHAR(75) null,titleCommit VARCHAR(75) null,createdAt VARCHAR(75) null,projectName VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table gitlab_Commit";
     public static final String ORDER_BY_JPQL = " ORDER BY commit.commitId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY gitlab_Commit.commitId ASC";
@@ -68,7 +69,8 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
                 "value.object.column.bitmask.enabled.de.hska.wi.awp.datasource.model.Commit"),
             true);
     public static long AUTHORNAME_COLUMN_BITMASK = 1L;
-    public static long COMMITID_COLUMN_BITMASK = 2L;
+    public static long PROJECTNAME_COLUMN_BITMASK = 2L;
+    public static long COMMITID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.de.hska.wi.awp.datasource.model.Commit"));
     private static ClassLoader _classLoader = Commit.class.getClassLoader();
@@ -79,6 +81,8 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
     private String _authorEmail;
     private String _titleCommit;
     private String _createdAt;
+    private String _projectName;
+    private String _originalProjectName;
     private long _columnBitmask;
     private Commit _escapedModel;
 
@@ -103,6 +107,7 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         model.setAuthorEmail(soapModel.getAuthorEmail());
         model.setTitleCommit(soapModel.getTitleCommit());
         model.setCreatedAt(soapModel.getCreatedAt());
+        model.setProjectName(soapModel.getProjectName());
 
         return model;
     }
@@ -166,6 +171,7 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         attributes.put("authorEmail", getAuthorEmail());
         attributes.put("titleCommit", getTitleCommit());
         attributes.put("createdAt", getCreatedAt());
+        attributes.put("projectName", getProjectName());
 
         return attributes;
     }
@@ -200,6 +206,12 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
 
         if (createdAt != null) {
             setCreatedAt(createdAt);
+        }
+
+        String projectName = (String) attributes.get("projectName");
+
+        if (projectName != null) {
+            setProjectName(projectName);
         }
     }
 
@@ -288,6 +300,31 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         _createdAt = createdAt;
     }
 
+    @JSON
+    @Override
+    public String getProjectName() {
+        if (_projectName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _projectName;
+        }
+    }
+
+    @Override
+    public void setProjectName(String projectName) {
+        _columnBitmask |= PROJECTNAME_COLUMN_BITMASK;
+
+        if (_originalProjectName == null) {
+            _originalProjectName = _projectName;
+        }
+
+        _projectName = projectName;
+    }
+
+    public String getOriginalProjectName() {
+        return GetterUtil.getString(_originalProjectName);
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -311,6 +348,7 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         commitImpl.setAuthorEmail(getAuthorEmail());
         commitImpl.setTitleCommit(getTitleCommit());
         commitImpl.setCreatedAt(getCreatedAt());
+        commitImpl.setProjectName(getProjectName());
 
         commitImpl.resetOriginalValues();
 
@@ -355,6 +393,8 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         CommitModelImpl commitModelImpl = this;
 
         commitModelImpl._originalAuthorName = commitModelImpl._authorName;
+
+        commitModelImpl._originalProjectName = commitModelImpl._projectName;
 
         commitModelImpl._columnBitmask = 0;
     }
@@ -403,12 +443,20 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
             commitCacheModel.createdAt = null;
         }
 
+        commitCacheModel.projectName = getProjectName();
+
+        String projectName = commitCacheModel.projectName;
+
+        if ((projectName != null) && (projectName.length() == 0)) {
+            commitCacheModel.projectName = null;
+        }
+
         return commitCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{commitId=");
         sb.append(getCommitId());
@@ -420,6 +468,8 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         sb.append(getTitleCommit());
         sb.append(", createdAt=");
         sb.append(getCreatedAt());
+        sb.append(", projectName=");
+        sb.append(getProjectName());
         sb.append("}");
 
         return sb.toString();
@@ -427,7 +477,7 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("de.hska.wi.awp.datasource.model.Commit");
@@ -452,6 +502,10 @@ public class CommitModelImpl extends BaseModelImpl<Commit>
         sb.append(
             "<column><column-name>createdAt</column-name><column-value><![CDATA[");
         sb.append(getCreatedAt());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>projectName</column-name><column-value><![CDATA[");
+        sb.append(getProjectName());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

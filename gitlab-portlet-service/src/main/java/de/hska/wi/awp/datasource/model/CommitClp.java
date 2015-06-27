@@ -24,6 +24,7 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
     private String _authorEmail;
     private String _titleCommit;
     private String _createdAt;
+    private String _projectName;
     private BaseModel<?> _commitRemoteModel;
     private Class<?> _clpSerializerClass = de.hska.wi.awp.datasource.service.ClpSerializer.class;
 
@@ -69,6 +70,7 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
         attributes.put("authorEmail", getAuthorEmail());
         attributes.put("titleCommit", getTitleCommit());
         attributes.put("createdAt", getCreatedAt());
+        attributes.put("projectName", getProjectName());
 
         return attributes;
     }
@@ -103,6 +105,12 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
 
         if (createdAt != null) {
             setCreatedAt(createdAt);
+        }
+
+        String projectName = (String) attributes.get("projectName");
+
+        if (projectName != null) {
+            setProjectName(projectName);
         }
     }
 
@@ -216,6 +224,28 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
         }
     }
 
+    @Override
+    public String getProjectName() {
+        return _projectName;
+    }
+
+    @Override
+    public void setProjectName(String projectName) {
+        _projectName = projectName;
+
+        if (_commitRemoteModel != null) {
+            try {
+                Class<?> clazz = _commitRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setProjectName", String.class);
+
+                method.invoke(_commitRemoteModel, projectName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getCommitRemoteModel() {
         return _commitRemoteModel;
     }
@@ -288,6 +318,7 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
         clone.setAuthorEmail(getAuthorEmail());
         clone.setTitleCommit(getTitleCommit());
         clone.setCreatedAt(getCreatedAt());
+        clone.setProjectName(getProjectName());
 
         return clone;
     }
@@ -331,7 +362,7 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{commitId=");
         sb.append(getCommitId());
@@ -343,6 +374,8 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
         sb.append(getTitleCommit());
         sb.append(", createdAt=");
         sb.append(getCreatedAt());
+        sb.append(", projectName=");
+        sb.append(getProjectName());
         sb.append("}");
 
         return sb.toString();
@@ -350,7 +383,7 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("de.hska.wi.awp.datasource.model.Commit");
@@ -375,6 +408,10 @@ public class CommitClp extends BaseModelImpl<Commit> implements Commit {
         sb.append(
             "<column><column-name>createdAt</column-name><column-value><![CDATA[");
         sb.append(getCreatedAt());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>projectName</column-name><column-value><![CDATA[");
+        sb.append(getProjectName());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

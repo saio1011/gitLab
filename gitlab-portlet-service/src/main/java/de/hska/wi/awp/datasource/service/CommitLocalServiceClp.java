@@ -54,8 +54,6 @@ public class CommitLocalServiceClp implements CommitLocalService {
     private String[] _methodParameterTypes22;
     private String _methodName23;
     private String[] _methodParameterTypes23;
-    private String _methodName24;
-    private String[] _methodParameterTypes24;
 
     public CommitLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -156,25 +154,21 @@ public class CommitLocalServiceClp implements CommitLocalService {
 
         _methodName20 = "ParseCommitsFromJson";
 
-        _methodParameterTypes20 = new String[] { "java.util.List" };
+        _methodParameterTypes20 = new String[] { "java.util.Map" };
 
         _methodName21 = "initCommitHistoryModel";
 
-        _methodParameterTypes21 = new String[] { "java.lang.String" };
+        _methodParameterTypes21 = new String[] {
+                "java.lang.String", "java.lang.String"
+            };
 
         _methodName22 = "deleteAllCommits";
 
         _methodParameterTypes22 = new String[] {  };
 
-        _methodName23 = "getProjectId";
+        _methodName23 = "loadConfigFile";
 
-        _methodParameterTypes23 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
-
-        _methodName24 = "loadConfigFile";
-
-        _methodParameterTypes24 = new String[] {  };
+        _methodParameterTypes23 = new String[] {  };
     }
 
     @Override
@@ -696,7 +690,7 @@ public class CommitLocalServiceClp implements CommitLocalService {
     }
 
     @Override
-    public java.util.List<java.lang.String> getAllCommitsAsJsonString()
+    public java.util.Map<java.lang.String, java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException {
         Object returnObj = null;
 
@@ -718,17 +712,19 @@ public class CommitLocalServiceClp implements CommitLocalService {
             }
         }
 
-        return (java.util.List<java.lang.String>) ClpSerializer.translateOutput(returnObj);
+        return (java.util.Map<java.lang.String, java.lang.String>) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
     public void ParseCommitsFromJson(
-        java.util.List<java.lang.String> jsonCommitsResponses) {
+        java.util.Map<java.lang.String, java.lang.String> jsonCommitsResponsesWithProjectName) {
         try {
             _invokableLocalService.invokeMethod(_methodName20,
                 _methodParameterTypes20,
-                new Object[] { ClpSerializer.translateInput(
-                        jsonCommitsResponses) });
+                new Object[] {
+                    ClpSerializer.translateInput(
+                        jsonCommitsResponsesWithProjectName)
+                });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -743,14 +739,18 @@ public class CommitLocalServiceClp implements CommitLocalService {
 
     @Override
     public org.primefaces.model.chart.LineChartModel initCommitHistoryModel(
-        java.lang.String studentName)
+        java.lang.String studentName, java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName21,
                     _methodParameterTypes21,
-                    new Object[] { ClpSerializer.translateInput(studentName) });
+                    new Object[] {
+                        ClpSerializer.translateInput(studentName),
+                        
+                    ClpSerializer.translateInput(projectName)
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -792,44 +792,12 @@ public class CommitLocalServiceClp implements CommitLocalService {
     }
 
     @Override
-    public java.lang.String getProjectId(java.lang.String projectName,
-        java.lang.String privateTocken)
-        throws org.primefaces.json.JSONException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName23,
-                    _methodParameterTypes23,
-                    new Object[] {
-                        ClpSerializer.translateInput(projectName),
-                        
-                    ClpSerializer.translateInput(privateTocken)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof org.primefaces.json.JSONException) {
-                throw (org.primefaces.json.JSONException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
     public java.util.Properties loadConfigFile() {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName24,
-                    _methodParameterTypes24, new Object[] {  });
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

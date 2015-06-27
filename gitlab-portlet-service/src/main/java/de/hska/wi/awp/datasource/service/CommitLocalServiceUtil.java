@@ -264,18 +264,18 @@ public class CommitLocalServiceUtil {
     }
 
     /**
-    * rest call to get all commits from gitlab
+    * rest call to get all commits from gitlab for all projects
     * gitlab api has pagination and max entries pro page
     * !!!therefore pagination does not works properly, I implemented the pagination manually
     *
     * parameters in getRequest: privateTocken, per_page=100, page=pageNumber
     *
     * @param -
-    * @return List<String> - json responses with all commits
+    * @return Map<String,String> - json responses with all commits for project name
     * @throws - IOException
     * @author Mihai Sava
     */
-    public static java.util.List<java.lang.String> getAllCommitsAsJsonString()
+    public static java.util.Map<java.lang.String, java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException {
         return getService().getAllCommitsAsJsonString();
     }
@@ -283,14 +283,12 @@ public class CommitLocalServiceUtil {
     /**
     * parse commits form json objects and save the parsed object into database
     *
-    * @param List<String> jsonCommits - all commits as string responses
-    * @throws JSONException, SystemException
+    * @param Map<String,String> jsonCommits - all commits as string responses and projects names
     * @author Mihai Sava
-    * @throws SystemException
     */
     public static void ParseCommitsFromJson(
-        java.util.List<java.lang.String> jsonCommitsResponses) {
-        getService().ParseCommitsFromJson(jsonCommitsResponses);
+        java.util.Map<java.lang.String, java.lang.String> jsonCommitsResponsesWithProjectName) {
+        getService().ParseCommitsFromJson(jsonCommitsResponsesWithProjectName);
     }
 
     /**
@@ -302,9 +300,9 @@ public class CommitLocalServiceUtil {
     * @author Mihai Sava
     */
     public static org.primefaces.model.chart.LineChartModel initCommitHistoryModel(
-        java.lang.String studentName)
+        java.lang.String studentName, java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().initCommitHistoryModel(studentName);
+        return getService().initCommitHistoryModel(studentName, projectName);
     }
 
     /**
@@ -321,12 +319,11 @@ public class CommitLocalServiceUtil {
         getService().deleteAllCommits();
     }
 
-    public static java.lang.String getProjectId(java.lang.String projectName,
-        java.lang.String privateTocken)
-        throws org.primefaces.json.JSONException {
-        return getService().getProjectId(projectName, privateTocken);
-    }
-
+    /**
+    * load Property File
+    *
+    * @author Mihai Sava
+    */
     public static java.util.Properties loadConfigFile() {
         return getService().loadConfigFile();
     }

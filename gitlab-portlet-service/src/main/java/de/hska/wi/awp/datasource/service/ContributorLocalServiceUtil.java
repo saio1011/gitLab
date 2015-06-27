@@ -264,11 +264,11 @@ public class ContributorLocalServiceUtil {
     }
 
     /**
-    * rest call to get all contributors (from gitlab) - from one project
+    * rest call to get all contributors (from gitlab) - from all projects
     * gitlab api has pagination and max entries pro page
     *
     * @param -
-    * @return String - json list with all contributors
+    * @return Map<String,String> - json responses with all contributors and project names
     * @throws IOException
     * @author Mihai Sava
     */
@@ -280,7 +280,7 @@ public class ContributorLocalServiceUtil {
     /**
     * parse contributors to java objects and save the parsed objects into database
     *
-    * @param String jsonContributors - all contributors as json list
+    * @param Map<String,String> jsonContributorsResponsesWithProjectName - all contributors as json responses for each project name
     * @return void
     * @throws JSONException, SystemException
     * @author Mihai Sava
@@ -293,6 +293,9 @@ public class ContributorLocalServiceUtil {
             .ParseContributorsFromJson(jsonContributorsResponsesWithProjectName);
     }
 
+    /**
+    * get current user
+    */
     public static de.hska.wi.awp.datasource.model.Contributor getCurrentUser(
         java.lang.String studentName)
         throws com.liferay.portal.kernel.exception.SystemException,
@@ -314,12 +317,11 @@ public class ContributorLocalServiceUtil {
         getService().deleleAllContributors();
     }
 
-    public static java.lang.String getProjectId(java.lang.String projectName,
-        java.lang.String privateTocken)
-        throws org.primefaces.json.JSONException {
-        return getService().getProjectId(projectName, privateTocken);
-    }
-
+    /**
+    * load Property File
+    *
+    * @author Mihai Sava
+    */
     public static java.util.Properties loadConfigFile() {
         return getService().loadConfigFile();
     }

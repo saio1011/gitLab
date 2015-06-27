@@ -55,8 +55,6 @@ public class CommitLocalServiceClpInvoker {
     private String[] _methodParameterTypes49;
     private String _methodName50;
     private String[] _methodParameterTypes50;
-    private String _methodName51;
-    private String[] _methodParameterTypes51;
 
     public CommitLocalServiceClpInvoker() {
         _methodName0 = "addCommit";
@@ -155,25 +153,21 @@ public class CommitLocalServiceClpInvoker {
 
         _methodName47 = "ParseCommitsFromJson";
 
-        _methodParameterTypes47 = new String[] { "java.util.List" };
+        _methodParameterTypes47 = new String[] { "java.util.Map" };
 
         _methodName48 = "initCommitHistoryModel";
 
-        _methodParameterTypes48 = new String[] { "java.lang.String" };
+        _methodParameterTypes48 = new String[] {
+                "java.lang.String", "java.lang.String"
+            };
 
         _methodName49 = "deleteAllCommits";
 
         _methodParameterTypes49 = new String[] {  };
 
-        _methodName50 = "getProjectId";
+        _methodName50 = "loadConfigFile";
 
-        _methodParameterTypes50 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
-
-        _methodName51 = "loadConfigFile";
-
-        _methodParameterTypes51 = new String[] {  };
+        _methodParameterTypes50 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -284,14 +278,15 @@ public class CommitLocalServiceClpInvoker {
 
         if (_methodName47.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes47, parameterTypes)) {
-            CommitLocalServiceUtil.ParseCommitsFromJson((java.util.List<java.lang.String>) arguments[0]);
+            CommitLocalServiceUtil.ParseCommitsFromJson((java.util.Map<java.lang.String, java.lang.String>) arguments[0]);
 
             return null;
         }
 
         if (_methodName48.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes48, parameterTypes)) {
-            return CommitLocalServiceUtil.initCommitHistoryModel((java.lang.String) arguments[0]);
+            return CommitLocalServiceUtil.initCommitHistoryModel((java.lang.String) arguments[0],
+                (java.lang.String) arguments[1]);
         }
 
         if (_methodName49.equals(name) &&
@@ -303,12 +298,6 @@ public class CommitLocalServiceClpInvoker {
 
         if (_methodName50.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
-            return CommitLocalServiceUtil.getProjectId((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1]);
-        }
-
-        if (_methodName51.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
             return CommitLocalServiceUtil.loadConfigFile();
         }
 

@@ -32,6 +32,7 @@ import de.hska.wi.awp.datasource.model.Commit;
 import de.hska.wi.awp.datasource.service.CommitLocalServiceUtil;
 import de.hska.wi.awp.datasource.service.base.CommitLocalServiceBaseImpl;
 import de.hska.wi.awp.datasource.service.persistence.CommitUtil;
+import de.hska.wi.awp.datasource.utils.Helper;
 
 /**
  * The implementation of the commit local service.
@@ -55,32 +56,27 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
      */
 	
 	/**
-	 * rest call to get all commits from gitlab
+	 * rest call to get all commits from gitlab for all projects
 	 * gitlab api has pagination and max entries pro page 
 	 * !!!therefore pagination does not works properly, I implemented the pagination manually
 	 * 
 	 * parameters in getRequest: privateTocken, per_page=100, page=pageNumber
 	 * 
 	 * @param -
-	 * @return List<String> - json responses with all commits
+	 * @return Map<String,String> - json responses with all commits for project name
 	 * @throws - IOException
 	 * @author Mihai Sava
 	 */
-	public List<String> getAllCommitsAsJsonString() throws IOException{
+	public Map<String,String> getAllCommitsAsJsonString() throws IOException{
 		
 		Properties configFile = this.loadConfigFile();
 		String private_token = "private_token="+configFile.getProperty("private_token");
-//		System.out.println(configFile.getProperty("HWB_AnzahlRepos"));
-//		System.out.println(configFile.getProperty("HWB_Repo1"));
 		
 		int anzahlProjekte = Integer.parseInt(configFile.getProperty("AnzahlProjekte"));
 		List<String> projektNamen = new ArrayList<String>();
 		for(int zl=1; zl<=anzahlProjekte; zl++){
 			projektNamen.add(configFile.getProperty("ProjektName"+zl));
 		}
-//		for(String proj : projekte){
-//			System.out.println(proj);
-//		}
 		
 		//get number of repositories for each project
 		Map<String,Integer> anzahlReposProjekt = new HashMap<String, Integer>();
@@ -89,21 +85,23 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 		}
 		
 		//get names of repositories
-		List<String> reposNames = new ArrayList<String>();
+		Map<String,String> reposNamesWithProjectName = new HashMap<String, String>();
 		for (Map.Entry<String, Integer> entry : anzahlReposProjekt.entrySet()) {
 			String key = entry.getKey();
 		    int value = entry.getValue();
 		    for(int zl = 1; zl <= value; zl++){
-		    	reposNames.add(configFile.getProperty(key+"_Repo"+zl));
+		    	reposNamesWithProjectName.put(configFile.getProperty(key+"_Repo"+zl), key);
 		    }
 		}
 		
-		//get repos Ids
-		List<String> reposIds = new ArrayList<String>();
-		for(String repoName : reposNames){
+		//get repos Ids	
+		Map<String,String> reposIdsWithProjectName = new HashMap<String, String>();
+		for (Map.Entry<String, String> entry : reposNamesWithProjectName.entrySet()) {
+			String repoName = entry.getKey();
+			String projectName = entry.getValue();
 			try {
-				String repoId = this.getProjectId(repoName, private_token);
-				reposIds.add(repoId);
+				String repoId = Helper.getProjectId(repoName, private_token);
+				reposIdsWithProjectName.put(repoId, projectName);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,15 +109,17 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 		}
 
 		//get Reguests for each repo
-		List<String> responses = new ArrayList<String>();
-		for(String repoId :reposIds){
+		Map<String,String> responsesWithProjectName = new HashMap<String, String>();
+		for(Map.Entry<String, String> entry : reposIdsWithProjectName.entrySet()){
+			String repoId = entry.getKey();
+			String projectName = entry.getValue();
 			String url = de.hska.wi.awp.datasource.utils.Constants.GITLAB_PATH_PROJECTS + repoId + de.hska.wi.awp.datasource.utils.Constants.GITLAB_PATH_COMMITS + "?" + private_token;
 			
 			Client client = Client.create();
 			
 			int pageNuber = 0;
 			while(true){
-				String newUrl = url+"&per_page=40&page="+pageNuber;
+				String newUrl = url+"&per_page=100&page="+pageNuber;
 				
 				WebResource webResource = client.resource(newUrl);
 
@@ -131,8 +131,9 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 				String responseBody = response.getEntity(String.class);
 				
 				pageNuber +=1;
+				//check if are commits on the following page 
 				if(responseBody.length()<3){
-					String testUrl = url+"&per_page=40&page="+pageNuber;
+					String testUrl = url+"&per_page=100&page="+pageNuber;
 					
 					WebResource wResource = client.resource(testUrl);
 
@@ -146,59 +147,21 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 						break;
 					}
 				}else{
-					responses.add(responseBody);
+					responsesWithProjectName.put(responseBody, projectName);
 				}
 			}
 		}
-//		String url = de.hska.wi.awp.datasource.utils.Constants.GITLAB_PATH_PROJECTS + projectId + de.hska.wi.awp.datasource.utils.Constants.GITLAB_PATH_COMMITS + "?" + privateTocken;
-//		
-//		Client client = Client.create();
-//		
-//		int pageNuber = 0;
-//		while(true){
-//			String newUrl = url+"&per_page=40&page="+pageNuber;
-//			
-//			WebResource webResource = client.resource(newUrl);
-//
-//			ClientResponse response = webResource
-//					.type("application/json").accept("application/json")
-//					.get(ClientResponse.class);
-//			
-//
-//			String responseBody = response.getEntity(String.class);
-//			
-//			pageNuber +=1;
-//			if(responseBody.length()<3){
-//				String testUrl = url+"&per_page=40&page="+pageNuber;
-//				
-//				WebResource wResource = client.resource(testUrl);
-//
-//				ClientResponse resp = wResource
-//						.type("application/json").accept("application/json")
-//						.get(ClientResponse.class);
-//				
-//				String respBody = resp.getEntity(String.class);
-//				
-//				if(respBody.length()<3){
-//					break;
-//				}
-//			}else{
-//				responses.add(responseBody);
-//			}
-//		}
-		
-		return responses;
+		return responsesWithProjectName;
 	}
 	
 	/**
 	 * parse commits form json objects and save the parsed object into database
 	 * 
-	 * @param List<String> jsonCommits - all commits as string responses
-	 * @throws JSONException, SystemException
+	 * @param Map<String,String> jsonCommits - all commits as string responses and projects names
+	 * 
 	 * @author Mihai Sava 
-	 * @throws SystemException 
 	 */
-	public void ParseCommitsFromJson(List<String> jsonCommitsResponses){
+	public void ParseCommitsFromJson(Map<String,String> jsonCommitsResponsesWithProjectName){
 		
 		try {
 			CommitLocalServiceUtil.deleteAllCommits();
@@ -207,10 +170,12 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 			e.printStackTrace();
 		}
 		
-		for(String jsonCommits : jsonCommitsResponses){
+		for(Map.Entry<String, String> entry : jsonCommitsResponsesWithProjectName.entrySet()){
+			String response = entry.getKey();
+			String projectName = entry.getValue();
 			JSONArray jsonArrayCommits = null;
 			try {
-				jsonArrayCommits = new JSONArray(jsonCommits);
+				jsonArrayCommits = new JSONArray(response);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -224,6 +189,7 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 					newCommit.setAuthorName(jsonArrayCommits.getJSONObject(zl).getString("author_name"));
 					newCommit.setTitleCommit(jsonArrayCommits.getJSONObject(zl).getString("title"));
 					newCommit.setCreatedAt(jsonArrayCommits.getJSONObject(zl).getString("created_at"));
+					newCommit.setProjectName(projectName);
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -236,22 +202,22 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 					e.printStackTrace();
 				}
 			}
-		}
-		
+		}	
 	}
 	
 	/**
 	 * init LineChartModel model for Commit History
 	 * 	
-	 * @param String studentName - this is the student hs name 
+	 * @param String studentName - this is the student hska name
+	 * @param String projectName - this is the hska project id (for example "AWP")
 	 * @return LineChartModel model - sorted by date
 	 * @throws SystemException
 	 * @author Mihai Sava 
 	 */
-    public LineChartModel initCommitHistoryModel(String studentName) throws SystemException{
+    public LineChartModel initCommitHistoryModel(String studentName, String projectName) throws SystemException{
     	LineChartModel model = new LineChartModel();
     	
-    	List<Commit> allCommitsFromThisStudent = CommitUtil.findByAuthorName(studentName);
+    	List<Commit> allCommitsFromThisStudent = CommitUtil.findByAuthorName(studentName, projectName);
     	
     	// get dates from commits 
     		//we take the first 8 characters from the date field as string
@@ -329,31 +295,11 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
 		}
 	}
 	
-	public String getProjectId(String projectName, String privateTocken) throws JSONException{
-		String url = de.hska.wi.awp.datasource.utils.Constants.GITLAB_FIND_POJECT_BY_NAME + projectName + "?" + privateTocken;
-		
-		Client client = Client.create();
-		WebResource webResource = client.resource(url);
-
-		ClientResponse response = webResource
-				.type("application/json").accept("application/json")
-				.get(ClientResponse.class);
-
-		String responseBody = response.getEntity(String.class);
-		
-		JSONArray jsonArrayCommits = new JSONArray(responseBody);
-		String projectId = "";
-		for (int zl = 0; zl<jsonArrayCommits.length(); zl++){
-			if(projectName.equals(jsonArrayCommits.getJSONObject(zl).getString("name")) && projectName.equals(jsonArrayCommits.getJSONObject(zl).getString("path"))){
-				projectId = jsonArrayCommits.getJSONObject(zl).getString("id");
-			}
-		}
-		
-		return projectId;
-	}
-	
+	/**
+	 * load Property File
+	 * @author Mihai Sava
+	 */
 	public Properties loadConfigFile(){
-    	////
     	Properties prop = new Properties();
     	InputStream input = null;
     	
@@ -373,10 +319,10 @@ public class CommitLocalServiceImpl extends CommitLocalServiceBaseImpl {
         } finally{
         	if(input!=null){
         		try {
-				input.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+        			input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
         	}
         }
     	

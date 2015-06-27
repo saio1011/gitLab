@@ -18,6 +18,7 @@ public class CommitSoap implements Serializable {
     private String _authorEmail;
     private String _titleCommit;
     private String _createdAt;
+    private String _projectName;
 
     public CommitSoap() {
     }
@@ -30,6 +31,7 @@ public class CommitSoap implements Serializable {
         soapModel.setAuthorEmail(model.getAuthorEmail());
         soapModel.setTitleCommit(model.getTitleCommit());
         soapModel.setCreatedAt(model.getCreatedAt());
+        soapModel.setProjectName(model.getProjectName());
 
         return soapModel;
     }
@@ -116,5 +118,13 @@ public class CommitSoap implements Serializable {
 
     public void setCreatedAt(String createdAt) {
         _createdAt = createdAt;
+    }
+
+    public String getProjectName() {
+        return _projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        _projectName = projectName;
     }
 }

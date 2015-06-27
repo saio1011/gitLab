@@ -51,8 +51,6 @@ public class StudentHistoryModelBean implements Serializable{
 	 
 	public int getNumberOfContributors() throws Exception {
 		this.createHeaderModel(this.getStudenthskaId(), this.getProjecthskaId());
-		System.out.println("Student id:"+this.getStudenthskaId());
-		System.out.println("Project id:"+this.getProjecthskaId());
 		return numberOfContributors;
 	}
 
@@ -104,7 +102,7 @@ public class StudentHistoryModelBean implements Serializable{
 	}
 
 	public LineChartModel getLineCommitsHistory() throws SystemException, IOException, JSONException {
-		this.createLineCommitsHistoryModel(this.getStudenthskaId());
+		this.createLineCommitsHistoryModel(this.getStudenthskaId(), this.getProjecthskaId());
 		return lineCommitsHistory;
 	}
 
@@ -118,9 +116,9 @@ public class StudentHistoryModelBean implements Serializable{
 	 * @throws SystemException, IOException, JSONException
 	 * @author Mihai Sava
 	 */
-	private void createLineCommitsHistoryModel(String studentName) throws SystemException, IOException, JSONException{
+	private void createLineCommitsHistoryModel(String studentName, String projectId) throws SystemException, IOException, JSONException{
 
-		lineCommitsHistory = CommitLocalServiceUtil.initCommitHistoryModel(studentName);
+		lineCommitsHistory = CommitLocalServiceUtil.initCommitHistoryModel(studentName, projectId);
 		lineCommitsHistory.setTitle("Commit History");
 		lineCommitsHistory.setLegendPosition("e");
 		lineCommitsHistory.setShowPointLabels(true);

@@ -38,13 +38,13 @@ public class GitLabLoadDataModelBean{
 		
         //Load Contributors and Commits from GitLab
     	Map<String, String> contributorsAsJsonStringsWithProjectName = null;
-		List<String> commitsAsJsonStrings = null;
+    	Map<String, String> commitsAsJsonStringsWithProjectName = null;
 		try {
 			contributorsAsJsonStringsWithProjectName = ContributorLocalServiceUtil.getContributors();
 			ContributorLocalServiceUtil.ParseContributorsFromJson(contributorsAsJsonStringsWithProjectName);
 			
-			commitsAsJsonStrings = CommitLocalServiceUtil.getAllCommitsAsJsonString();
-			CommitLocalServiceUtil.ParseCommitsFromJson(commitsAsJsonStrings);
+			commitsAsJsonStringsWithProjectName = CommitLocalServiceUtil.getAllCommitsAsJsonString();
+			CommitLocalServiceUtil.ParseCommitsFromJson(commitsAsJsonStringsWithProjectName);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

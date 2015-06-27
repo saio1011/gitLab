@@ -242,31 +242,29 @@ public interface CommitLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     /**
-    * rest call to get all commits from gitlab
+    * rest call to get all commits from gitlab for all projects
     * gitlab api has pagination and max entries pro page
     * !!!therefore pagination does not works properly, I implemented the pagination manually
     *
     * parameters in getRequest: privateTocken, per_page=100, page=pageNumber
     *
     * @param -
-    * @return List<String> - json responses with all commits
+    * @return Map<String,String> - json responses with all commits for project name
     * @throws - IOException
     * @author Mihai Sava
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.String> getAllCommitsAsJsonString()
+    public java.util.Map<java.lang.String, java.lang.String> getAllCommitsAsJsonString()
         throws java.io.IOException;
 
     /**
     * parse commits form json objects and save the parsed object into database
     *
-    * @param List<String> jsonCommits - all commits as string responses
-    * @throws JSONException, SystemException
+    * @param Map<String,String> jsonCommits - all commits as string responses and projects names
     * @author Mihai Sava
-    * @throws SystemException
     */
     public void ParseCommitsFromJson(
-        java.util.List<java.lang.String> jsonCommitsResponses);
+        java.util.Map<java.lang.String, java.lang.String> jsonCommitsResponsesWithProjectName);
 
     /**
     * init LineChartModel model for Commit History
@@ -277,7 +275,7 @@ public interface CommitLocalService extends BaseLocalService,
     * @author Mihai Sava
     */
     public org.primefaces.model.chart.LineChartModel initCommitHistoryModel(
-        java.lang.String studentName)
+        java.lang.String studentName, java.lang.String projectName)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -292,11 +290,11 @@ public interface CommitLocalService extends BaseLocalService,
     public void deleteAllCommits()
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getProjectId(java.lang.String projectName,
-        java.lang.String privateTocken)
-        throws org.primefaces.json.JSONException;
-
+    /**
+    * load Property File
+    *
+    * @author Mihai Sava
+    */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.Properties loadConfigFile();
 }
