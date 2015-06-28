@@ -10,9 +10,14 @@
 >
 	<h:head />
 	<h:body>
+		<h:form>
+
+			<h:outputText
+				value="Die GitLab-Daten werden aktuell täglich um 0:00Uhr neu geladen. Falls Sie aktuellere Daten benötigen, können sie diese gerne manuell herunterladen."></h:outputText>
+		</h:form>
 		 <h:form>
 		 	<p:growl id="growl" />  
-            <h:commandButton value="Load Data" immediate="true" action="#{gitLabLoadDataModelBean.addGitLabMockData}" styleClass="ui-priority-primary"/>      
+            <h:commandButton value="GitLab Datenbank aktuallisieren" immediate="true" action="#{gitLabLoadDataModelBean.addGitLabMockData}" styleClass="ui-priority-primary"/>      
           </h:form>
 	</h:body>
 </f:view>

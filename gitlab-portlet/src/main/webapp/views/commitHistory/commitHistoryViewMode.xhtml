@@ -10,6 +10,11 @@
 >
 	<h:head />
 	<h:body>
+		<h:form rendered="#{empty studentHistoryModelBean.studenthskaId and empty projectHistoryModelBean.projectId}">
+			<h:outputText value="Bitte wählen sie einen Studenten oder eine Gruppe" />
+
+		</h:form>
+		
 		<h:panelGroup id="wrapperPanel">
     		<h:panelGroup id="student" rendered="#{not empty studentHistoryModelBean.studenthskaId}">
        			<ui:include src="commitHistoryStudent.xhtml" />
